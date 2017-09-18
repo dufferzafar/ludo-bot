@@ -35,11 +35,6 @@ class Board(QGraphicsView):
         """Add a colored square to a scene."""
         self.scene.addRect(x, y, size, size, brush=QtG.QBrush(QtG.QColor(color)))
 
-    def drawBackground(self, painter, rect):
-        """Set White Background"""
-        white = QtG.QBrush(QtG.QColor(Color.WHITE))
-        painter.fillRect(rect, white)
-
 
 if __name__ == '__main__':
 
