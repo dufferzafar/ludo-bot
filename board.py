@@ -28,10 +28,11 @@ class BoardView(QGraphicsView):
     def __init__(self):
         QGraphicsView.__init__(self)
 
-        # TODO: Prevent Window Resize
-
         # Window's dimensions
         self.setGeometry(QtC.QRect(500, 100, 904, 904))
+
+        # Prevent Window Resize
+        self.setFixedSize(self.size())
 
         self.board = BoardScene()
         self.setScene(self.board)
