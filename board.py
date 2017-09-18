@@ -12,35 +12,43 @@ from PyQt5.QtWidgets import QGraphicsScene
 from config import Color
 
 
-class Board(QGraphicsView):
+class BoardScene(QGraphicsScene):
+
+    def __init__(self):
+        QGraphicsScene.__init__(self)
+        self.setSceneRect(0, 0, 900, 900)
+
+    def addSquare(self, x, y, size, color):
+        """Add a colored square to a scene."""
+        self.addRect(x, y, size, size, brush=QtG.QBrush(QtG.QColor(color)))
+
+
+class BoardView(QGraphicsView):
 
     def __init__(self):
         QGraphicsView.__init__(self)
 
+        # TODO: Prevent Window Resize
+
         # Window's dimensions
         self.setGeometry(QtC.QRect(500, 100, 904, 904))
 
-        self.scene = QGraphicsScene(self)
-        self.scene.setSceneRect(0, 0, 900, 900)
-        self.setScene(self.scene)
+        self.board = BoardScene()
+        self.setScene(self.board)
 
         # Add 4 Big Squares
         SIZE_BIG_SQUARE = 360
-        self.addSquare(0  , 0  , SIZE_BIG_SQUARE, Color.RED)
-        self.addSquare(540, 0  , SIZE_BIG_SQUARE, Color.GREEN)
-        self.addSquare(0  , 540, SIZE_BIG_SQUARE, Color.BLUE)
-        self.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW)
-
-    def addSquare(self, x, y, size, color):
-        """Add a colored square to a scene."""
-        self.scene.addRect(x, y, size, size, brush=QtG.QBrush(QtG.QColor(color)))
+        self.board.addSquare(0  , 0  , SIZE_BIG_SQUARE, Color.RED)
+        self.board.addSquare(540, 0  , SIZE_BIG_SQUARE, Color.GREEN)
+        self.board.addSquare(0  , 540, SIZE_BIG_SQUARE, Color.BLUE)
+        self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW)
 
 
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    view = Board()
+    view = BoardView()
     view.show()
 
     sys.exit(app.exec_())
