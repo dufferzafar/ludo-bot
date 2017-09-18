@@ -1,0 +1,50 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "python3 -u \"$file\""
+		}
+	],
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				"*.egg-info",
+				".cache",
+				"_Help/**"
+			],
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"pep257_ignore":
+		[
+			"D100",
+			"D200",
+			"D208",
+			"D209",
+			"D202",
+			"D203",
+			"D205",
+			"D211",
+			"D102",
+			"D101",
+			"D103",
+			"D105",
+			"D400",
+			"D401"
+		],
+		"pep8_ignore":
+		[
+			"E203",
+			"E251",
+			"E501"
+		],
+		"python_interpreter": "python3"
+	}
+}
