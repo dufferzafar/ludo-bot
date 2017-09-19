@@ -52,6 +52,11 @@ class BoardView(QGraphicsView):
         self.add_squares((420, 60), SIZE_UNIT_SQUARE, Color.GREEN, 5, row=False)
         self.add_squares((420, 540), SIZE_UNIT_SQUARE, Color.BLUE, 5, row=False)
 
+        # Add starting squares (Colored)
+        self.board.addSquare(60, 360, SIZE_UNIT_SQUARE, Color.RED)
+        self.board.addSquare(780, 480, SIZE_UNIT_SQUARE, Color.YELLOW)
+        self.board.addSquare(480, 60, SIZE_UNIT_SQUARE, Color.GREEN)
+        self.board.addSquare(360, 780, SIZE_UNIT_SQUARE, Color.BLUE)
 
     def add_squares(self, start, size, color, count, row=True):
         for i in range(count):
