@@ -39,10 +39,18 @@ class BoardView(QGraphicsView):
 
         # Add 4 Big Squares
         SIZE_BIG_SQUARE = 360
-        self.board.addSquare(0  , 0  , SIZE_BIG_SQUARE, Color.RED)
-        self.board.addSquare(540, 0  , SIZE_BIG_SQUARE, Color.GREEN)
-        self.board.addSquare(0  , 540, SIZE_BIG_SQUARE, Color.BLUE)
+        SIZE_UNIT_SQUARE = 60
+
+        self.board.addSquare(0, 0, SIZE_BIG_SQUARE, Color.RED)
+        self.board.addSquare(540, 0, SIZE_BIG_SQUARE, Color.GREEN)
+        self.board.addSquare(0, 540, SIZE_BIG_SQUARE, Color.BLUE)
         self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW)
+
+        # Add Home Columns
+        self.add_squares((60, 420), SIZE_UNIT_SQUARE, Color.RED, 5)
+        self.add_squares((540, 420), SIZE_UNIT_SQUARE, Color.YELLOW, 5)
+        self.add_squares((420, 60), SIZE_UNIT_SQUARE, Color.GREEN, 5, row=False)
+        self.add_squares((420, 540), SIZE_UNIT_SQUARE, Color.BLUE, 5, row=False)
 
 
     def add_squares(self, start, size, color, count, row=True):
