@@ -19,9 +19,12 @@ class BoardScene(QGraphicsScene):
         QGraphicsScene.__init__(self)
         self.setSceneRect(0, 0, 900, 900)
 
-    def addSquare(self, x, y, size, color):
+    def addSquare(self, x, y, size, color, border_width=2):
         """Add a colored square to a scene."""
-        self.addRect(x, y, size, size, brush=QtG.QBrush(QtG.QColor(color)))
+        pen = QtG.QPen(QtG.QColor(Color.BLACK))
+        pen.setWidthF(border_width)
+
+        self.addRect(x, y, size, size, pen=pen, brush=QtG.QBrush(QtG.QColor(color)))
 
     # Overriding addPolygon Method
     def addPolygon(self, points, color, border=Color.BLACK):
