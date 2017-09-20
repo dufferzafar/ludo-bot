@@ -27,14 +27,14 @@ class BoardScene(QGraphicsScene):
         self.addRect(x, y, size, size, pen=pen, brush=QtG.QBrush(QtG.QColor(color)))
 
     # Overriding addPolygon Method
-    def addPolygon(self, points, color, border=Color.BLACK):
+    def addPolygon(self, points, color, border_color=Color.BLACK):
         """Add a colored polygon to a scene"""
         qpoints = [Qt.QPointF(x, y) for (x, y) in points]
         polygon = Qt.QPolygonF(qpoints)
 
         super(BoardScene, self).addPolygon(
             polygon,
-            pen=QtG.QPen(QtG.QColor(border)),
+            pen=QtG.QPen(QtG.QColor(border_color)),
             brush=QtG.QBrush(QtG.QColor(color))
         )
 
@@ -53,15 +53,9 @@ class BoardView(QGraphicsView):
         self.board = BoardScene()
         self.setScene(self.board)
 
-        # Add 4 Big Squares
         SIZE_BIG_SQUARE = 360
         SIZE_UNIT_SQUARE = 60
         SIZE_FINISH_SQUARE = 180
-
-        self.board.addSquare(0, 0, SIZE_BIG_SQUARE, Color.RED)
-        self.board.addSquare(540, 0, SIZE_BIG_SQUARE, Color.GREEN)
-        self.board.addSquare(0, 540, SIZE_BIG_SQUARE, Color.BLUE)
-        self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW)
 
         # White Squares
         # Must be drawn before any other colored unit suare
@@ -83,17 +77,17 @@ class BoardView(QGraphicsView):
         self.board.addSquare(360, 780, SIZE_UNIT_SQUARE, Color.BLUE)
 
         # Add Finishing square
-        self.board.addSquare(360, 360, SIZE_FINISH_SQUARE, Color.WHITE)
+        self.board.addSquare(360, 360, SIZE_FINISH_SQUARE, Color.WHITE, border_width=4)
 
         # Add Finishing Triangles
         points = [(363, 366), (363, 534), (447, 450)]
-        self.board.addPolygon(points, Color.RED, Color.WHITE)
+        self.board.addPolygon(points, Color.RED, border_color=Color.WHITE)
         points = [(537, 366), (537, 534), (453, 450)]
-        self.board.addPolygon(points, Color.YELLOW, Color.WHITE)
+        self.board.addPolygon(points, Color.YELLOW, border_color=Color.WHITE)
         points = [(366, 363), (534, 363), (450, 447)]
-        self.board.addPolygon(points, Color.GREEN, Color.WHITE)
+        self.board.addPolygon(points, Color.GREEN, border_color=Color.WHITE)
         points = [(366, 537), (534, 537), (450, 453)]
-        self.board.addPolygon(points, Color.BLUE, Color.WHITE)
+        self.board.addPolygon(points, Color.BLUE, border_color=Color.WHITE)
 
         # Add Safe Squares as per board image on piazza
         # https://d1b10bmlvqabco.cloudfront.net/attach/j5drxbfmuwn490/ir1vkh6c6md2vf/j7rvzmnrnu4x/ff8ce7ca004f619b451bd93be3370f6eludomybestfriend.jpg
@@ -101,6 +95,12 @@ class BoardView(QGraphicsView):
         self.board.addSquare(720, 360, SIZE_UNIT_SQUARE, Color.YELLOW)
         self.board.addSquare(360, 120, SIZE_UNIT_SQUARE, Color.GREEN)
         self.board.addSquare(480, 720, SIZE_UNIT_SQUARE, Color.BLUE)
+
+        # Add 4 Big Squares
+        self.board.addSquare(0, 0, SIZE_BIG_SQUARE, Color.RED, border_width=6)
+        self.board.addSquare(540, 0, SIZE_BIG_SQUARE, Color.GREEN, border_width=6)
+        self.board.addSquare(0, 540, SIZE_BIG_SQUARE, Color.BLUE, border_width=6)
+        self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW, border_width=6)
 
     def add_squares(self, start, size, color, count, row=True):
         for i in range(count):
