@@ -19,10 +19,12 @@ class BoardScene(QGraphicsScene):
         QGraphicsScene.__init__(self)
         self.setSceneRect(0, 0, 900, 900)
 
-    def addSquare(self, x, y, size, color, border_width=2):
+    def addSquare(self, x, y, size, color, border_color=Color.BLACK, border_width=2):
         """Add a colored square to a scene."""
-        pen = QtG.QPen(QtG.QColor(Color.BLACK))
+        pen = QtG.QPen(QtG.QColor(border_color))
         pen.setWidthF(border_width)
+        MiterJoin = 0x00
+        pen.setJoinStyle(MiterJoin)
 
         self.addRect(x, y, size, size, pen=pen, brush=QtG.QBrush(QtG.QColor(color)))
 
