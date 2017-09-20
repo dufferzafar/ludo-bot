@@ -24,13 +24,14 @@ class BoardScene(QGraphicsScene):
         self.addRect(x, y, size, size, brush=QtG.QBrush(QtG.QColor(color)))
 
     # Overriding addPolygon Method
-    def addPolygon(self, points, color):
+    def addPolygon(self, points, color, border=Color.BLACK):
         """Add a colored polygon to a scene"""
         qpoints = [Qt.QPointF(x, y) for (x, y) in points]
         polygon = Qt.QPolygonF(qpoints)
 
         super(BoardScene, self).addPolygon(
             polygon,
+            pen=QtG.QPen(QtG.QColor(border)),
             brush=QtG.QBrush(QtG.QColor(color))
         )
 
@@ -76,13 +77,13 @@ class BoardView(QGraphicsView):
 
         # Add Finishing Triangles
         points = [(363, 366), (363, 534), (447, 450)]
-        self.board.addPolygon(points, Color.RED)
+        self.board.addPolygon(points, Color.RED, Color.WHITE)
         points = [(537, 366), (537, 534), (453, 450)]
-        self.board.addPolygon(points, Color.YELLOW)
+        self.board.addPolygon(points, Color.YELLOW, Color.WHITE)
         points = [(366, 363), (534, 363), (450, 447)]
-        self.board.addPolygon(points, Color.GREEN)
+        self.board.addPolygon(points, Color.GREEN, Color.WHITE)
         points = [(366, 537), (534, 537), (450, 453)]
-        self.board.addPolygon(points, Color.BLUE)
+        self.board.addPolygon(points, Color.BLUE, Color.WHITE)
 
     def add_squares(self, start, size, color, count, row=True):
         for i in range(count):

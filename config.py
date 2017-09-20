@@ -2,6 +2,7 @@
 class Color():
 
     WHITE = "#e3e3e3"
+    BLACK = "#000000"
 
     # Stolen from:
     # https://img15.deviantart.net/3574/i/2010/096/2/1/ludo_board_by_markhal.jpg
