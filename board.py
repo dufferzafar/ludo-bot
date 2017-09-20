@@ -60,6 +60,13 @@ class BoardView(QGraphicsView):
         self.board.addSquare(0, 540, SIZE_BIG_SQUARE, Color.BLUE)
         self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW)
 
+        # White Squares
+        # Must be drawn before any other colored unit suare
+        # Rows
+        for i in range(3):
+            self.add_squares((0, 360 + 60 * i), SIZE_UNIT_SQUARE, Color.WHITE, 15)
+            self.add_squares((360 + 60 * i, 0), SIZE_UNIT_SQUARE, Color.WHITE, 15, row=False)
+
         # Add Home Columns
         self.add_squares((60, 420), SIZE_UNIT_SQUARE, Color.RED, 5)
         self.add_squares((540, 420), SIZE_UNIT_SQUARE, Color.YELLOW, 5)
