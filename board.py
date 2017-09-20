@@ -92,6 +92,13 @@ class BoardView(QGraphicsView):
         points = [(366, 537), (534, 537), (450, 453)]
         self.board.addPolygon(points, Color.BLUE, Color.WHITE)
 
+        # Add Safe Squares as per board image on piazza
+        # https://d1b10bmlvqabco.cloudfront.net/attach/j5drxbfmuwn490/ir1vkh6c6md2vf/j7rvzmnrnu4x/ff8ce7ca004f619b451bd93be3370f6eludomybestfriend.jpg
+        self.board.addSquare(120, 480, SIZE_UNIT_SQUARE, Color.RED)
+        self.board.addSquare(720, 360, SIZE_UNIT_SQUARE, Color.YELLOW)
+        self.board.addSquare(360, 120, SIZE_UNIT_SQUARE, Color.GREEN)
+        self.board.addSquare(480, 720, SIZE_UNIT_SQUARE, Color.BLUE)
+
     def add_squares(self, start, size, color, count, row=True):
         for i in range(count):
             x = start[0] + 60 * i * int(row)
