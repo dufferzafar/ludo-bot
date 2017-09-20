@@ -3,6 +3,7 @@ import sys
 # PyQt Imports
 from PyQt5 import QtCore as QtC
 from PyQt5 import QtGui as QtG
+from PyQt5 import Qt
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QGraphicsView
@@ -21,6 +22,17 @@ class BoardScene(QGraphicsScene):
     def addSquare(self, x, y, size, color):
         """Add a colored square to a scene."""
         self.addRect(x, y, size, size, brush=QtG.QBrush(QtG.QColor(color)))
+
+    # Overriding addPolygon Method
+    def addPolygon(self, points, color):
+        """Add a colored polygon to a scene"""
+        qpoints = [Qt.QPointF(x, y) for (x, y) in points]
+        polygon = Qt.QPolygonF(qpoints)
+
+        super(BoardScene, self).addPolygon(
+            polygon,
+            brush=QtG.QBrush(QtG.QColor(color))
+        )
 
 
 class BoardView(QGraphicsView):
