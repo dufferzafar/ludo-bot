@@ -54,11 +54,13 @@ class BoardView(QGraphicsView):
 
         self.board = BoardScene()
         self.setScene(self.board)
+        self.paint()
 
+    def paint(self):
         SIZE_BIG_SQUARE = 360
         SIZE_UNIT_SQUARE = 60
         SIZE_FINISH_SQUARE = 180
-
+        SIZE_YARD_SUBSQUARE = 102
         # White Squares
         # Must be drawn before any other colored unit suare
         # Rows
@@ -103,6 +105,24 @@ class BoardView(QGraphicsView):
         self.board.addSquare(540, 0, SIZE_BIG_SQUARE, Color.GREEN, border_width=6)
         self.board.addSquare(0, 540, SIZE_BIG_SQUARE, Color.BLUE, border_width=6)
         self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW, border_width=6)
+
+        # Add Sub Squares in the yard
+        # change border width to change the thickness of yard subsquares
+        border_width = 30
+        yards = [
+            (0, 0, Color.RED),
+            (540, 0, Color.GREEN),
+            (0, 540, Color.BLUE),
+            (540, 540, Color.YELLOW)
+        ]
+
+        for x, y, color in yards:
+            x += 72
+            y += 72
+            self.board.addSquare(x, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+            self.board.addSquare(x + 102, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+            self.board.addSquare(x, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+            self.board.addSquare(x + 102, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
 
     def add_squares(self, start, size, color, count, row=True):
         for i in range(count):
