@@ -52,6 +52,7 @@ class BoardView(QGraphicsView):
         # Add 4 Big Squares
         SIZE_BIG_SQUARE = 360
         SIZE_UNIT_SQUARE = 60
+        SIZE_FINISH_SQUARE = 180
 
         self.board.addSquare(0, 0, SIZE_BIG_SQUARE, Color.RED)
         self.board.addSquare(540, 0, SIZE_BIG_SQUARE, Color.GREEN)
@@ -69,6 +70,19 @@ class BoardView(QGraphicsView):
         self.board.addSquare(780, 480, SIZE_UNIT_SQUARE, Color.YELLOW)
         self.board.addSquare(480, 60, SIZE_UNIT_SQUARE, Color.GREEN)
         self.board.addSquare(360, 780, SIZE_UNIT_SQUARE, Color.BLUE)
+
+        # Add Finishing square
+        self.board.addSquare(360, 360, SIZE_FINISH_SQUARE, Color.WHITE)
+
+        # Add Finishing Triangles
+        points = [(363, 366), (363, 534), (447, 450)]
+        self.board.addPolygon(points, Color.RED)
+        points = [(537, 366), (537, 534), (453, 450)]
+        self.board.addPolygon(points, Color.YELLOW)
+        points = [(366, 363), (534, 363), (450, 447)]
+        self.board.addPolygon(points, Color.GREEN)
+        points = [(366, 537), (534, 537), (450, 453)]
+        self.board.addPolygon(points, Color.BLUE)
 
     def add_squares(self, start, size, color, count, row=True):
         for i in range(count):
