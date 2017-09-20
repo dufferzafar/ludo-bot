@@ -45,6 +45,13 @@ class BoardView(QGraphicsView):
         self.board.addSquare(540, 540, SIZE_BIG_SQUARE, Color.YELLOW)
 
 
+    def add_squares(self, start, size, color, count, row=True):
+        for i in range(count):
+            x = start[0] + 60 * i * int(row)
+            y = start[1] + 60 * i * int(not row)
+            self.board.addSquare(x, y, size, color)
+
+
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
