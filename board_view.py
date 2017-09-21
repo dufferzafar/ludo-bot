@@ -68,7 +68,7 @@ class BoardView(QGraphicsScene):
         SIZE_BIG_SQUARE = 360
         SIZE_UNIT_SQUARE = 60
         SIZE_FINISH_SQUARE = 180
-        SIZE_YARD_SUBSQUARE = 102
+        SIZE_YARD_SUBSQUARE = 108
 
         # White Squares
         # Must be drawn before any other colored unit suare
@@ -129,9 +129,9 @@ class BoardView(QGraphicsScene):
             x += 72
             y += 72
             self.addSquare(x, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
-            self.addSquare(x + 102, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
-            self.addSquare(x, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
-            self.addSquare(x + 102, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+            self.addSquare(x + 108, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+            self.addSquare(x, y + 108, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+            self.addSquare(x + 108, y + 108, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
         self.addCoin(60, 360, Color.GREEN)
