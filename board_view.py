@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QGraphicsScene
 
 # Our Code
 from config import Color
+from config import Board as BoardConfig
 
 
 class BoardView(QGraphicsScene):
@@ -62,6 +63,60 @@ class BoardView(QGraphicsScene):
         pen.setWidthF(4)
 
         self.addEllipse(pos[0] + 8, pos[1] + 8, 45, 45, pen=pen, brush=QtG.QBrush(color))
+
+    def coordinatesOfSquare(self, square):
+        """Get coordinates for a square whose position is given relatively."""
+
+        # TODO: Handle the case for yard
+        if (square == 0):
+            pass
+
+        # Get offset from (X_0, Y_0)
+        if (1 <= square <= 5):
+            x = square
+            y = 0
+        elif (square <= 11):
+            x = 6
+            y = 5 - square
+        elif (square == 12):
+            x = 7
+            y = -6
+        elif (square <= 18):
+            x = 8
+            y = square - 19
+        elif (square <= 24):
+            x = square - 10
+            y = 0
+        elif (square == 25):
+            x = 14
+            y = 1
+        elif (square <= 31):
+            x = 40 - square
+            y = 2
+        elif (square <= 37):
+            x = 8
+            y = square - 29
+        elif (square == 38):
+            x = 7
+            y = 8
+        elif (square <= 44):
+            x = 6
+            y = 47 - square
+        elif (square <= 50):
+            x = 50 - square
+            y = 2
+        elif (square == 51):
+            x = 0
+            y = 1
+        elif (square <= 57):
+            x = square - 51
+            y = 1
+
+        # Transform offsets into coordinates
+        x = BoardConfig.X_0 + x * BoardConfig.SQUARE_SIZE
+        y = BoardConfig.Y_0 + y * BoardConfig.SQUARE_SIZE
+
+        return x, y
 
     def paint(self):
         # TODO: Express all these values as multiples of h (60) ?
@@ -134,4 +189,3 @@ class BoardView(QGraphicsScene):
             self.addSquare(x + 108, y + 108, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
-        self.addCoin(60, 360, Color.GREEN)
