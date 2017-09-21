@@ -7,6 +7,7 @@ This is what should be run from the CLI: python main.py
 import sys
 
 # PyQt Imports
+from PyQt5 import Qt
 from PyQt5 import QtCore as QtC
 
 from PyQt5.QtWidgets import QApplication
@@ -29,6 +30,10 @@ class LudoApp(QGraphicsView):
 
         # Add the board
         self.setScene(BoardView())
+
+    def keyPressEvent(self, e):
+        if e.key() == QtC.Qt.Key_Escape:
+            self.close()
 
 
 if __name__ == '__main__':
