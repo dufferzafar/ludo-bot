@@ -189,3 +189,7 @@ class BoardView(QGraphicsScene):
             self.addSquare(x + 108, y + 108, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
+        self.addCoin(self.coordinatesOfSquare(1), Color.GREEN)
+        self.addCoin(self.coordinatesOfSquare(9), Color.RED)
+        self.addCoin(self.coordinatesOfSquare(14), Color.YELLOW)
+        self.addCoin(self.coordinatesOfSquare(22), Color.BLUE)
