@@ -53,7 +53,7 @@ class BoardView(QGraphicsScene):
             brush=QtG.QBrush(QtG.QColor(color))
         )
 
-    def addCoin(self, x, y, color):
+    def addCoin(self, pos, color):
         """Add a coin piece to the board."""
         color = QtG.QColor(color)
 
@@ -61,7 +61,7 @@ class BoardView(QGraphicsScene):
         pen = QtG.QPen(color.darker(165))
         pen.setWidthF(4)
 
-        self.addEllipse(x + 8, y + 8, 45, 45, pen=pen, brush=QtG.QBrush(color))
+        self.addEllipse(pos[0] + 8, pos[1] + 8, 45, 45, pen=pen, brush=QtG.QBrush(color))
 
     def paint(self):
         # TODO: Express all these values as multiples of h (60) ?
