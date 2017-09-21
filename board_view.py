@@ -33,6 +33,7 @@ class BoardView(QGraphicsScene):
         Add count no. of squares to the board.
 
         TODO: Fixup the row parameter!
+        TODO: All functions take x, y seperately while this takes a tuple start
         """
         for i in range(count):
             x = start[0] + 60 * i * int(row)
@@ -40,17 +41,27 @@ class BoardView(QGraphicsScene):
 
             self.addSquare(x, y, size, color)
 
-    # Overriding addPolygon Method
     def addPolygon(self, points, color, border_color=Color.BLACK):
-        """Add a colored polygon to a scene"""
-        qpoints = [Qt.QPointF(x, y) for (x, y) in points]
-        polygon = Qt.QPolygonF(qpoints)
+        """Add a colored polygon to the board."""
+        polygon = Qt.QPolygonF([Qt.QPointF(x, y) for (x, y) in points])
 
+        # Since this method is overridden,
+        # we just call QGraphicsScene's addPolygon method
         super(BoardView, self).addPolygon(
             polygon,
             pen=QtG.QPen(QtG.QColor(border_color)),
             brush=QtG.QBrush(QtG.QColor(color))
         )
+
+    def addCoin(self, x, y, color):
+        """Add a coin piece to the board."""
+        color = QtG.QColor(color)
+
+        # Use a darker shade for the border
+        pen = QtG.QPen(color.darker(165))
+        pen.setWidthF(4)
+
+        self.addEllipse(x + 8, y + 8, 45, 45, pen=pen, brush=QtG.QBrush(color))
 
     def paint(self):
         # TODO: Express all these values as multiples of h (60) ?
@@ -121,3 +132,6 @@ class BoardView(QGraphicsScene):
             self.addSquare(x + 102, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
             self.addSquare(x, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
             self.addSquare(x + 102, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
+
+        # Add coins
+        self.addCoin(60, 360, Color.GREEN)
