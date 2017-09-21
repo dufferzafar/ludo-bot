@@ -1,19 +1,18 @@
-import sys
+"""
+This module deals with drawing of the board.
+"""
 
 # PyQt Imports
-from PyQt5 import QtCore as QtC
-from PyQt5 import QtGui as QtG
 from PyQt5 import Qt
+from PyQt5 import QtGui as QtG
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QGraphicsView
 from PyQt5.QtWidgets import QGraphicsScene
 
 # Our Code
 from config import Color
 
 
-class BoardScene(QGraphicsScene):
+class BoardView(QGraphicsScene):
 
     def __init__(self):
         QGraphicsScene.__init__(self)
@@ -47,17 +46,19 @@ class BoardScene(QGraphicsScene):
         qpoints = [Qt.QPointF(x, y) for (x, y) in points]
         polygon = Qt.QPolygonF(qpoints)
 
-        super(BoardScene, self).addPolygon(
+        super(BoardView, self).addPolygon(
             polygon,
             pen=QtG.QPen(QtG.QColor(border_color)),
             brush=QtG.QBrush(QtG.QColor(color))
         )
 
     def paint(self):
+        # TODO: Express all these values as multiples of h (60) ?
         SIZE_BIG_SQUARE = 360
         SIZE_UNIT_SQUARE = 60
         SIZE_FINISH_SQUARE = 180
         SIZE_YARD_SUBSQUARE = 102
+
         # White Squares
         # Must be drawn before any other colored unit suare
         # Rows
@@ -120,27 +121,3 @@ class BoardScene(QGraphicsScene):
             self.addSquare(x + 102, y, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
             self.addSquare(x, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
             self.addSquare(x + 102, y + 102, SIZE_YARD_SUBSQUARE, color, border_color=Color.WHITE, border_width=border_width)
-
-
-class BoardView(QGraphicsView):
-
-    def __init__(self):
-        QGraphicsView.__init__(self)
-
-        # Window's dimensions
-        self.setGeometry(QtC.QRect(500, 100, 904, 904))
-
-        # Prevent Window Resize
-        self.setFixedSize(self.size())
-
-        self.setScene(BoardScene())
-
-
-if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-
-    view = BoardView()
-    view.show()
-
-    sys.exit(app.exec_())
