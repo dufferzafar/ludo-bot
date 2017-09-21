@@ -42,15 +42,14 @@ class Board():
     Y_0 = 6 * SQUARE_SIZE
 
     # Location of sub sqaures in the yard
-    # TODO: Update these once the yard is properly done
-    YARD_X_0 = 0
-    YARD_Y_0 = 0
+    YARD_X_0 = SQUARE_SIZE + 12
+    YARD_Y_0 = SQUARE_SIZE + 12
 
-    YARD_X_1 = 0
-    YARD_Y_1 = 0
+    YARD_X_1 = SQUARE_SIZE * 3
+    YARD_Y_1 = SQUARE_SIZE + 12
 
-    YARD_X_2 = 0
-    YARD_Y_2 = 0
+    YARD_X_2 = SQUARE_SIZE + 12
+    YARD_Y_2 = SQUARE_SIZE * 3
 
-    YARD_X_3 = 0
-    YARD_Y_3 = 0
+    YARD_X_3 = SQUARE_SIZE * 3
+    YARD_Y_3 = SQUARE_SIZE * 3
