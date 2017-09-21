@@ -4,10 +4,11 @@ This module provides the main entry point to the Ludo Application.
 This is what should be run from the CLI: python main.py
 """
 
+# Python stdlib
 import sys
+import signal
 
 # PyQt Imports
-from PyQt5 import Qt
 from PyQt5 import QtCore as QtC
 
 from PyQt5.QtWidgets import QApplication
@@ -37,6 +38,10 @@ class LudoApp(QGraphicsView):
 
 
 if __name__ == '__main__':
+
+    # Close on Ctrl + C from terminal
+    # https://stackoverflow.com/a/5160720
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     app = QApplication(sys.argv)
 
