@@ -19,6 +19,15 @@ class Board():
     # Size of a single small square
     SQUARE_SIZE = 60
 
+    # Size of yard/jail
+    YARD_SIZE = SQUARE_SIZE * 6
+
+    # Size of finishing square / home
+    FINISH_SQUARE_SIZE = SQUARE_SIZE * 3
+
+    # Size of yard/jail
+    YARD_SUBSQUARE_SIZE = SQUARE_SIZE * 2 - 12
+
     # Size of the entire board
     # NOTE: There are 15 small squares on the board
     BOARD_SIZE = 15 * SQUARE_SIZE
