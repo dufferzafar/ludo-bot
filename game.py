@@ -25,6 +25,10 @@ class LudoGame:
             # Read die rolls from client (stdin)
             die_rolls = []
 
+            # handle ducks! [0] is returned on rolling 3 sixes
+            if die_rolls == [0]:
+                raise NotImplementedError
+
             # it is opponent's turn
             # wait for their move
             # move opponent's pieces
@@ -35,3 +39,5 @@ class LudoGame:
             # send the moves to client (stdout)
             moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
             moves = "\n".join(moves)
+
+            # handle THROW / REPEAT messages

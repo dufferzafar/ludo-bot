@@ -15,6 +15,11 @@ class Player:
         # Each Player has 4 Coins
         self.coins = [Coin(color, idx) for idx in range(0, 4)]
 
+    @property
+    def percent(self):
+        """How much game has this player completed?"""
+        raise NotImplementedError
+
     def move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
@@ -24,6 +29,16 @@ class Player:
         TODO: Strategies & All decision making
         """
         raise NotImplementedError
+
+        # TODO: Each of these functions will be called for all die rolls?
+        # Some will need to called for combinations of inputs?
+
+        # Alvi's "expert" ludo player
+
+        # if self.can_open(): open
+        # elif self.can_kill(): kill
+        # elif self.can_die(): protect
+        # else: move fastest
 
 
 class Coin:
