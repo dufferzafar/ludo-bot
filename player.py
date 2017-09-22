@@ -3,6 +3,29 @@ This module deals with the logical representation of a Player and Coins.
 """
 
 
+class Player:
+
+    """Represent a player."""
+
+    def __init__(self, color):
+
+        # Player's Color: Red, Green, Blue, Yellow
+        self.color = color
+
+        # Each Player has 4 Coins
+        self.coins = [Coin(color, idx) for idx in range(0, 4)]
+
+    def move(self, die_rolls, other_players):
+        """
+        Use positions of other players to make a move.
+
+        Returns a list of tuples: [(coin, die_roll), ...]
+
+        TODO: Strategies & All decision making
+        """
+        raise NotImplementedError
+
+
 class Coin:
 
     """Represent a player's coin piece."""
