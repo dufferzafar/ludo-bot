@@ -2,6 +2,9 @@
 This module deals with drawing of the board.
 """
 
+# Stdlib
+import math
+
 # PyQt Imports
 from PyQt5 import Qt
 from PyQt5 import QtGui as QtG
@@ -64,8 +67,29 @@ class BoardView(QGraphicsScene):
 
         self.addEllipse(pos[0] + 8, pos[1] + 8, 45, 45, pen=pen, brush=QtG.QBrush(color))
 
-    def coordinatesOfSquare(self, square):
-        """Get coordinates for a square whose position is given relatively."""
+    def rotate(self, point, relative_to=0):
+        """Rotate a point around the board's center."""
+
+        theta = relative_to * math.pi / 2
+
+        x = point[0] - BoardConfig.X_CENTER
+        y = point[1] - BoardConfig.Y_CENTER
+
+        new_x = x * math.cos(theta) - y * math.sin(theta) + BoardConfig.X_CENTER
+        new_y = x * math.sin(theta) + y * math.cos(theta) + BoardConfig.Y_CENTER
+
+        if relative_to == 1:
+            new_x -= BoardConfig.SQUARE_SIZE
+        elif relative_to == 2:
+            new_x -= BoardConfig.SQUARE_SIZE
+            new_y -= BoardConfig.SQUARE_SIZE
+        elif relative_to == 3:
+            new_y -= BoardConfig.SQUARE_SIZE
+
+        return new_x, new_y
+
+    def coordinatesOfSquare(self, square, relative_to=0):
+        """Get coordinates for a square whose position is given relative to some player."""
 
         # TODO: Handle the case for yard
         if (square == 0):
@@ -116,7 +140,7 @@ class BoardView(QGraphicsScene):
         x = BoardConfig.X_0 + x * BoardConfig.SQUARE_SIZE
         y = BoardConfig.Y_0 + y * BoardConfig.SQUARE_SIZE
 
-        return x, y
+        return self.rotate((x, y), relative_to)
 
     def paint(self):
         # White Squares
@@ -183,7 +207,7 @@ class BoardView(QGraphicsScene):
             self.addSquare(x + 108, y + 108, BoardConfig.YARD_SUBSQUARE_SIZE, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
-        self.addCoin(self.coordinatesOfSquare(1), Color.GREEN)
-        self.addCoin(self.coordinatesOfSquare(9), Color.RED)
-        self.addCoin(self.coordinatesOfSquare(14), Color.YELLOW)
-        self.addCoin(self.coordinatesOfSquare(22), Color.BLUE)
+        self.addCoin(self.coordinatesOfSquare(9, relative_to=0), Color.RED)
+        self.addCoin(self.coordinatesOfSquare(9, relative_to=1), Color.GREEN)
+        self.addCoin(self.coordinatesOfSquare(9, relative_to=2), Color.YELLOW)
+        self.addCoin(self.coordinatesOfSquare(9, relative_to=3), Color.BLUE)
