@@ -19,21 +19,14 @@ class Board():
     # Size of a single small square
     SQUARE_SIZE = 60
 
-    # Size of yard/jail
-    YARD_SIZE = SQUARE_SIZE * 6
-
     # Size of finishing square / home
     FINISH_SQUARE_SIZE = SQUARE_SIZE * 3
 
-    # Size of yard/jail
-    YARD_SUBSQUARE_SIZE = SQUARE_SIZE * 2 - 12
-
     # Size of the entire board
-    # NOTE: There are 15 small squares on the board
+    # Note that there are 15 small squares on the board
     BOARD_SIZE = 15 * SQUARE_SIZE
 
     # Location of the logical origin of the board
-    # There are total
     X_CENTER = BOARD_SIZE / 2
     Y_CENTER = BOARD_SIZE / 2
 
@@ -41,15 +34,17 @@ class Board():
     X_0 = 0
     Y_0 = 6 * SQUARE_SIZE
 
+    # Size of yard/jail
+    YARD_SIZE = SQUARE_SIZE * 6
+
+    # Size of yard/jail
+    YARD_SUBSQUARE_SIZE = SQUARE_SIZE * 2
+
     # Location of sub sqaures in the yard
-    YARD_X_0 = SQUARE_SIZE + 12
-    YARD_Y_0 = SQUARE_SIZE + 12
-
-    YARD_X_1 = SQUARE_SIZE * 3
-    YARD_Y_1 = SQUARE_SIZE + 12
-
-    YARD_X_2 = SQUARE_SIZE + 12
-    YARD_Y_2 = SQUARE_SIZE * 3
-
-    YARD_X_3 = SQUARE_SIZE * 3
-    YARD_Y_3 = SQUARE_SIZE * 3
+    YARD_COIN_OFF = SQUARE_SIZE * 1.5
+    YARD_COINS = [
+        (YARD_COIN_OFF, YARD_COIN_OFF),
+        (YARD_SUBSQUARE_SIZE + YARD_COIN_OFF, YARD_COIN_OFF),
+        (YARD_COIN_OFF, YARD_SUBSQUARE_SIZE + YARD_COIN_OFF),
+        (YARD_SUBSQUARE_SIZE + YARD_COIN_OFF, YARD_SUBSQUARE_SIZE + YARD_COIN_OFF),
+    ]
