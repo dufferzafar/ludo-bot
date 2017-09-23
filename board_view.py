@@ -182,29 +182,27 @@ class BoardView(QGraphicsScene):
         self.addSquare(360, 120, BoardConfig.SQUARE_SIZE, Color.GREEN)
         self.addSquare(480, 720, BoardConfig.SQUARE_SIZE, Color.BLUE)
 
-        # Add 4 Big Squares
-        self.addSquare(0, 0, BoardConfig.YARD_SIZE, Color.RED, border_width=6)
-        self.addSquare(540, 0, BoardConfig.YARD_SIZE, Color.GREEN, border_width=6)
-        self.addSquare(0, 540, BoardConfig.YARD_SIZE, Color.BLUE, border_width=6)
-        self.addSquare(540, 540, BoardConfig.YARD_SIZE, Color.YELLOW, border_width=6)
-
-        # Add Sub Squares in the yard
-        # change border width to change the thickness of yard subsquares
-        border_width = 30
+        # Add Yards / Jails
         yards = [
             (0, 0, Color.RED),
             (540, 0, Color.GREEN),
             (0, 540, Color.BLUE),
             (540, 540, Color.YELLOW)
         ]
-
         for x, y, color in yards:
-            x += 72
-            y += 72
-            self.addSquare(x, y, BoardConfig.YARD_SUBSQUARE_SIZE, color, border_color=Color.WHITE, border_width=border_width)
-            self.addSquare(x + 108, y, BoardConfig.YARD_SUBSQUARE_SIZE, color, border_color=Color.WHITE, border_width=border_width)
-            self.addSquare(x, y + 108, BoardConfig.YARD_SUBSQUARE_SIZE, color, border_color=Color.WHITE, border_width=border_width)
-            self.addSquare(x + 108, y + 108, BoardConfig.YARD_SUBSQUARE_SIZE, color, border_color=Color.WHITE, border_width=border_width)
+            # Yard
+            self.addSquare(x, y, BoardConfig.YARD_SIZE, color, border_width=6)
+
+            # Add Sub Squares in the yard
+            x += BoardConfig.SQUARE_SIZE
+            y += BoardConfig.SQUARE_SIZE
+            border_width = 25
+            yard_sub = BoardConfig.YARD_SUBSQUARE_SIZE
+
+            self.addSquare(x, y, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
+            self.addSquare(x + yard_sub, y, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
+            self.addSquare(x, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
+            self.addSquare(x + yard_sub, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
         self.addCoin(self.coordinatesOfSquare(9, relative_to=0), Color.RED)
