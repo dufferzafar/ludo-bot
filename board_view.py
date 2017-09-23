@@ -102,7 +102,7 @@ class BoardView(QGraphicsScene):
         # TODO: Handle the case for yard
         if (square == 0):
             rotate_relative = functools.partial(self.rotate, relative_to=relative_to)
-            return map(rotate_relative, BoardConfig.YARD_COINS)
+            return list(map(rotate_relative, BoardConfig.YARD_COINS))
 
         # Get offset from (X_0, Y_0)
         if (1 <= square <= 5):
