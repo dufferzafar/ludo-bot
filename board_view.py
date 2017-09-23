@@ -4,6 +4,7 @@ This module deals with drawing of the board.
 
 # Stdlib
 import math
+import functools
 
 # PyQt Imports
 from PyQt5 import Qt
@@ -13,6 +14,7 @@ from PyQt5.QtWidgets import QGraphicsScene
 
 # Our Code
 from config import Color
+from config import PLAYER_COLORS
 from config import Board as BoardConfig
 
 
@@ -93,7 +95,8 @@ class BoardView(QGraphicsScene):
 
         # TODO: Handle the case for yard
         if (square == 0):
-            pass
+            rotate_relative = functools.partial(self.rotate, relative_to=relative_to)
+            return map(rotate_relative, BoardConfig.YARD_COINS)
 
         # Get offset from (X_0, Y_0)
         if (1 <= square <= 5):
@@ -142,7 +145,7 @@ class BoardView(QGraphicsScene):
 
         return self.rotate((x, y), relative_to)
 
-    def paint(self):
+    def paint(self, coins=[]):
         # White Squares
         # Must be drawn before any other colored unit suare
         # Rows
@@ -205,7 +208,12 @@ class BoardView(QGraphicsScene):
             self.addSquare(x + yard_sub, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
-        self.addCoin(self.coordinatesOfSquare(9, relative_to=0), Color.RED)
-        self.addCoin(self.coordinatesOfSquare(9, relative_to=1), Color.GREEN)
-        self.addCoin(self.coordinatesOfSquare(9, relative_to=2), Color.YELLOW)
-        self.addCoin(self.coordinatesOfSquare(9, relative_to=3), Color.BLUE)
+        for coin in coins:
+            coords = self.coordinatesOfSquare(coin.rel_pos, relative_to=PLAYER_COLORS.index(coin.color))
+
+            # Coin is in yard, and we get a list of coords in that case
+            if coin.rel_pos == 0:
+                coords = coords[coin.num]
+
+            color_hex = Color.__dict__[coin.color]
+            self.addCoin(coords, color_hex)
