@@ -60,10 +60,10 @@ class BoardView(QGraphicsScene):
 
     def addCoin(self, pos, color):
         """Add a coin piece to the board."""
-        color = QtG.QColor(color)
+        color = QtG.QColor(color).darker(120)
 
         # Use a darker shade for the border
-        pen = QtG.QPen(color.darker(165))
+        pen = QtG.QPen(color.darker(150))
         pen.setWidthF(4)
 
         self.addEllipse(pos[0] + 8, pos[1] + 8, 45, 45, pen=pen, brush=QtG.QBrush(color))
