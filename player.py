@@ -18,7 +18,7 @@ class Player:
     @property
     def percent(self):
         """How much game has this player completed?"""
-        raise NotImplementedError
+        return sum([25 * (coin.rel_pos / 57) for coin in self.coins])
 
     def move(self, die_rolls, other_players):
         """
