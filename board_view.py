@@ -23,7 +23,6 @@ class BoardView(QGraphicsScene):
     def __init__(self):
         QGraphicsScene.__init__(self)
         self.setSceneRect(0, 0, 900, 900)
-        self.paint()
 
     def addSquare(self, x, y, size, color, border_color=Color.BLACK, border_width=2):
         """Add a colored square to the board."""

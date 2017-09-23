@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import QGraphicsView
 
 # Our Code
 from board_view import BoardView
+from game import LudoGame
 
 
 class LudoApp(QGraphicsView):
@@ -30,7 +31,10 @@ class LudoApp(QGraphicsView):
         self.setFixedSize(self.size())
 
         # Add the board
-        self.setScene(BoardView())
+        self.board = BoardView()
+        self.setScene(self.board)
+
+        self.game = LudoGame(self.board)
 
     def keyPressEvent(self, e):
         if e.key() == QtC.Qt.Key_Escape:

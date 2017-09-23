@@ -2,18 +2,26 @@
 
 from player import Player
 
-# TODO: enum? Some other defintion?
-colors = ["Red", "Green", "Blue", "Yellow"]
+from config import PLAYER_COLORS
 
 
 class LudoGame:
 
-    def __init__(self):
+    def __init__(self, board):
+
+        # from board_view import BoardView
+        self.board = board
 
         # A Game has 4 players
         # TODO: Since our games will only ever have 2 players
         # We could just use two variables player, opponent?
-        self.players = [Player(color) for color in colors]
+        self.players = [Player(color) for color in PLAYER_COLORS]
+
+        self.coins = []
+        for player in self.players:
+            self.coins.extend(player.coins)
+
+        self.board.paint(self.coins)
 
     def play(self):
 
