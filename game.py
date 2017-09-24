@@ -1,8 +1,24 @@
 """This module controls the entire Ludo Game and interfaces with the provided client."""
 
+# stdlib
+import sys
+
+from random import randint
+
+# Our Code
 from player import Player
 
 from config import PLAYER_COLORS
+
+
+# These are used to interact with the client
+def read_input():
+    return sys.stdin.readline().strip()
+
+
+def write_output(txt):
+    sys.stdout.write(txt+"\n")
+    sys.stdout.flush()
 
 
 class LudoGame:
@@ -25,13 +41,19 @@ class LudoGame:
 
     def play(self):
 
-        # while not self.finished():
+        # Read initial parameters from the client
+        time_limit, my_player_id, game_mode = map(int, read_input().split(' '))
+
+        # Decide whether it is my turn or opponents
         while True:
 
-            # Decide whether it is my turn or my opponents
+            # handle THROW / REPEAT messages
+
+            # Roll the die
+            write_output("<THROW>")
 
             # Read die rolls from client (stdin)
-            die_rolls = []
+            die_rolls = read_input()
 
             # handle ducks! [0] is returned on rolling 3 sixes
             if die_rolls == [0]:
@@ -48,4 +70,5 @@ class LudoGame:
             moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
             moves = "\n".join(moves)
 
-            # handle THROW / REPEAT messages
+            # update the gui
+            self.board.paint(self.coins)
