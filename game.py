@@ -39,6 +39,13 @@ class LudoGame:
 
         self.board.paint(self.coins)
 
+    def random(self):
+        # Assign random positions to coins
+        for coin in self.coins:
+            coin.rel_pos = randint(0, 57)
+
+        self.board.paint(self.coins)
+
     def play(self):
 
         # Read initial parameters from the client
