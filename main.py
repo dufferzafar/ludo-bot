@@ -36,6 +36,9 @@ class LudoApp(QGraphicsView):
         self.board = BoardView()
         self.setScene(self.board)
 
+        self.game = ThreadedGame()
+        self.game.update_view.connect(self.board.paint)
+
     def keyPressEvent(self, e):
         if e.key() == QtC.Qt.Key_Escape:
             self.close()
@@ -66,12 +69,10 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    view = LudoApp()
-    game = ThreadedGame()
+    ludo = LudoApp()
 
-    game.update_view.connect(view.board.paint)
+    ludo.show()
 
-    view.show()
-    game.start()
+    ludo.game.start()
 
     sys.exit(app.exec_())
