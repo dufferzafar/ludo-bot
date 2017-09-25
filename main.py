@@ -8,6 +8,7 @@ This is what should be run from the CLI: python main.py
 import sys
 import signal
 import time
+import os
 
 # PyQt Imports
 from PyQt5 import QtCore as QtC
@@ -54,7 +55,8 @@ class ThreadedGame(LudoGame, QtC.QThread):
         while True:
             self.randomize_board()
             self.update_view.emit(self.coins)
-            time.sleep(1)
+            time.sleep(5)
+            os.system('clear')
 
 if __name__ == '__main__':
 
