@@ -110,8 +110,11 @@ class Coin(object):
         self._rel_pos = 0
         self.abs_pos = 0
 
-    def __repr__(self):
+    def __str__(self):
         return self.color[0] + str(self.num)
+
+    def __repr__(self):
+        return "<Coin: %s>" % self.__str__()
 
     def rel_to_abs(self, rel_pos):
         """Convert relative position to absolute position,
