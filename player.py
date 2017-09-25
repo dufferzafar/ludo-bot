@@ -117,7 +117,9 @@ class Coin(object):
         return "<Coin: %s>" % self.__str__()
 
     def rel_to_abs(self, rel_pos):
+    def __iadd__(self, die):
         """Convert relative position to absolute position,
+        self.rel_pos += die
         Based on color of this coin"""
         mycolor_index = PLAYER_COLORS.index(self.color)
         if rel_pos == 0:
