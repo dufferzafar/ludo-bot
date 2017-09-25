@@ -1,8 +1,28 @@
 """
-This module deals with the logical representation of a Player and Coins.
+This module deals with the logical representation of a Board, Player and Coins.
 """
 
 from config import PLAYER_COLORS
+
+
+class Board(object):
+
+    """Logical representation of a board."""
+
+    # There is no __init__ because we'll never create a board
+    # but only use methods & variables defined on it.
+
+    # Starting squares & Star squares
+    safe_squares = [1, 9, 14, 22, 27, 35, 40, 48]
+    home_column = list(range(52, 58))
+
+    @staticmethod
+    def is_safe(self, rel_pos):
+        """Checks whether a given relative position is safe or not?"""
+        if rel_pos in Board.safe_squares + Board.home_column:
+            return True
+
+        return False
 
 
 class Player(object):
@@ -34,16 +54,8 @@ class Player(object):
 
     @property
     def on_home_col(self):
-
         """Which coins are on home column?"""
-    def is_safe(self, rel_pos):
         return [c for c in self.coins if 52 <= c.rel_pos <= 56]
-        """checks if a relative position safe or not"""
-        safe_squares = [1, 9, 14, 22, 27, 35, 40, 48]  # starting squares plus star squares
-        home_column = [x for x in range(52, 58)]
-        if rel_pos in safe_squares + home_column:
-            return True
-        return False
 
     def can_kill(self, die_roll, other_players):
         """Who can i kill with this die_roll
