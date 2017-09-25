@@ -33,9 +33,12 @@ class LudoGame:
         for player in self.players:
             self.coins.extend(player.coins)
 
+    def randomize_board(self):
+        """
+        Assign random positions to coins.
 
-    def random(self):
-        # Assign random positions to coins
+        Used while debugging etc.
+        """
         for coin in self.coins:
             coin.rel_pos = randint(0, 57)
 

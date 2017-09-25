@@ -50,10 +50,4 @@ if __name__ == '__main__':
     view = LudoApp()
     view.show()
 
-    game = LudoGame(view.board)
-
-    timer = QtC.QTimer()
-    timer.timeout.connect(game.random)
-    timer.start(750)
-
     sys.exit(app.exec_())
