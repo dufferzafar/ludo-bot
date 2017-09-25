@@ -77,14 +77,19 @@ class Coin:
 
     @rel_pos.setter
     def rel_pos(self, square):
+
+        # if in finishing block stays in finishing block
+        if self._rel_pos is 57:
+            return
+
         self._rel_pos = square
 
         # updating absolute position
         mycolor_index = PLAYER_COLORS.index(self.color)
-        if(square == 0):
+        if square == 0:
             # inside yard
             self.abs_pos = 0
-        elif(square >= 52):
+        elif square >= 52:
             # inside home column
             self.abs_pos = -1
             # can be used directly to check whether inside home column or not
