@@ -5,7 +5,7 @@ This module deals with the logical representation of a Player and Coins.
 from config import PLAYER_COLORS
 
 
-class Player:
+class Player(object):
 
     """Represent a player."""
 
@@ -65,7 +65,7 @@ class Player:
         # else: move fastest
 
 
-class Coin:
+class Coin(object):
 
     """Represent a player's coin piece."""
 
