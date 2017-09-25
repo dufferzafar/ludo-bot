@@ -29,11 +29,21 @@ class Player:
 
     @property
     def finished_coins(self):
+        """Which coins have reached finishing square"""
         return [coin for coin in self.coins if coin.rel_pos is 57]
 
     @property
     def on_home_col(self):
+        """Which coins are on home column"""
         return [coin for coin in self.coins if coin.rel_pos >= 52 and coin.rel_pos <= 56]
+
+    def is_safe(self, rel_pos):
+        """checks if a relative position safe or not"""
+        safe_squares = [1, 9, 14, 22, 27, 35, 40, 48]  # starting squares plus star squares
+        home_column = [x for x in range(52, 58)]  # TODO? is this necessary
+        if rel_pos in safe_squares + home_column:
+            return True
+        return False
     def move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
