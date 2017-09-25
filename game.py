@@ -23,11 +23,7 @@ def write_output(txt):
 
 class LudoGame:
 
-    def __init__(self, board):
-
-        # from board_view import BoardView
-        self.board = board
-
+    def __init__(self):
         # A Game has 4 players
         # TODO: Since our games will only ever have 2 players
         # We could just use two variables player, opponent?
@@ -37,14 +33,11 @@ class LudoGame:
         for player in self.players:
             self.coins.extend(player.coins)
 
-        self.board.paint(self.coins)
 
     def random(self):
         # Assign random positions to coins
         for coin in self.coins:
             coin.rel_pos = randint(0, 57)
-
-        self.board.paint(self.coins)
 
     def play(self):
 
@@ -76,6 +69,3 @@ class LudoGame:
             # send the moves to client (stdout)
             moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
             moves = "\n".join(moves)
-
-            # update the gui
-            self.board.paint(self.coins)
