@@ -20,6 +20,10 @@ class Player:
         """How much game has this player completed?"""
         return sum([25 * (coin.rel_pos / 57) for coin in self.coins])
 
+    @property
+    def in_jail(self):
+        """Who is still in the Jail"""
+        return [coin for coin in self.coins if coin.rel_pos is 0]
     def move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
