@@ -39,9 +39,14 @@ class LudoApp(QGraphicsView):
         self.game = ThreadedGame()
         self.game.update_view.connect(self.board.paint)
 
+        self.board.paint(self.game.coins)
+
     def keyPressEvent(self, e):
         if e.key() == QtC.Qt.Key_Escape:
             self.close()
+        elif e.key() == QtC.Qt.Key_Space:
+            self.game.randomize_board()
+            self.board.paint(self.game.coins)
 
 
 class ThreadedGame(LudoGame, QtC.QThread):
@@ -73,6 +78,6 @@ if __name__ == '__main__':
 
     ludo.show()
 
-    ludo.game.start()
+    # ludo.game.start()
 
     sys.exit(app.exec_())
