@@ -67,7 +67,8 @@ class Player(object):
         for coin in self.coins:
             if (coin not in self.on_home_col and         # not in home column
                     coin not in self.finished_coins and  # not finished
-                    coin not in self.in_jail):           # not in jail
+                    coin not in self.in_jail and         # not in jail
+                    not Board.is_safe(coin.rel_pos + die_roll)):
 
                 killer_coins.append(coin)
 
@@ -86,7 +87,7 @@ class Player(object):
         possible_kills = []
         for killer_coin, kill_spot in zip(killer_coins, kill_spots):
             for target_coin in opponent_coins:
-                if kill_spot == target_coin.abs_pos and not Board.is_safe(kill_spot):
+                if kill_spot == target_coin.abs_pos and not Board.is_safe(coin.rel_pos + die_roll):
                     possible_kills.append((killer_coin, target_coin))
 
         return possible_kills
