@@ -2,6 +2,8 @@
 This module deals with the logical representation of a Player and Coins.
 """
 
+from config import PLAYER_COLORS
+
 
 class Player:
 
@@ -77,5 +79,15 @@ class Coin:
     def rel_pos(self, square):
         self._rel_pos = square
 
-        # TODO: Update absolute position
-        self.abs_pos = square
+        # updating absolute position
+        mycolor_index = PLAYER_COLORS.index(self.color)
+        if(square == 0):
+            # inside yard
+            self.abs_pos = 0
+        elif(square >= 52):
+            # inside home column
+            self.abs_pos = -1
+            # can be used directly to check whether inside home column or not
+        else:
+            self.abs_pos = (self._rel_pos - 1 + 13 * mycolor_index) % 52 + 1
+            # subtracting 1 to make it 0 based then adding 1 to make it 1 based again
