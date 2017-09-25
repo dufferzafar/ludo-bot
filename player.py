@@ -19,25 +19,25 @@ class Player(object):
 
     @property
     def percent(self):
-        """How much game has this player completed?"""
-        return sum([25 * (coin.rel_pos / 57) for coin in self.coins])
+        """How much game have I completed?"""
+        return sum([25 * (c.rel_pos / 57) for c in self.coins])
 
     @property
     def in_jail(self):
-        """Who is still in the Jail"""
-        return [coin for coin in self.coins if coin.rel_pos is 0]
+        """Which coins are still in the Jail?"""
+        return [c for c in self.coins if c.rel_pos == 0]
 
     @property
     def finished_coins(self):
-        """Which coins have reached finishing square"""
-        return [coin for coin in self.coins if coin.rel_pos is 57]
+        """Which coins have reached finishing square?"""
+        return [c for c in self.coins if c.rel_pos == 57]
 
     @property
     def on_home_col(self):
-        """Which coins are on home column"""
-        return [coin for coin in self.coins if coin.rel_pos >= 52 and coin.rel_pos <= 56]
 
+        """Which coins are on home column?"""
     def is_safe(self, rel_pos):
+        return [c for c in self.coins if 52 <= c.rel_pos <= 56]
         """checks if a relative position safe or not"""
         safe_squares = [1, 9, 14, 22, 27, 35, 40, 48]  # starting squares plus star squares
         home_column = [x for x in range(52, 58)]
