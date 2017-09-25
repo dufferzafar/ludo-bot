@@ -60,7 +60,7 @@ class BoardView(QGraphicsScene):
 
     def addCoin(self, pos, color, coin_num):
         """Add a coin piece to the board."""
-        color = QtG.QColor(color).darker(120)
+        color = QtG.QColor(color).darker(150)
 
         # Use a darker shade for the border
         pen = QtG.QPen(color.darker(150))
@@ -73,7 +73,8 @@ class BoardView(QGraphicsScene):
         font.setPointSize(20)
 
         text = self.addSimpleText(str(coin_num), font)
-        text.setPos(Qt.QPointF(pos[0] + 23, pos[1] + 13))
+        text.setBrush(QtG.QBrush(QtG.QColor(Color.WHITE)))
+        text.setPos(Qt.QPointF(pos[0] + 23, pos[1] + 12))
 
     def rotate(self, point, relative_to=0):
         """Rotate a point around the board's center."""
