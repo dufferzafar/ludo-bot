@@ -116,22 +116,29 @@ class Coin(object):
     def __repr__(self):
         return "<Coin: %s>" % self.__str__()
 
-    def rel_to_abs(self, rel_pos):
     def __iadd__(self, die):
-        """Convert relative position to absolute position,
         self.rel_pos += die
-        Based on color of this coin"""
+
+    def rel_to_abs(self, rel_pos):
+        """
+        Convert relative position to absolute position.
+
+        The formula is based on the color (player number) of this coin.
+
+        This is used in functions that need to check where two coins
+        (of different colors) are with respect to one another.
+        """
         mycolor_index = PLAYER_COLORS.index(self.color)
-        if rel_pos == 0:
-            # inside yard
+
+        if rel_pos == 0:     # Inside yard
             abs_pos = 0
-        elif rel_pos >= 52:
-            # inside home column
+        elif rel_pos >= 52:  # Inside home column
             abs_pos = -1
-            # can be used directly to check whether inside home column or not
+            # -1 can be used directly to check whether a coin is
+            # inside home column or not
         else:
             abs_pos = (rel_pos - 1 + 13 * mycolor_index) % 52 + 1
-            # subtracting 1 to make it 0 based then adding 1 to make it 1 based again
+            # Subtracting 1 to make it 0 based then adding 1 to make it 1 based again
         return abs_pos
 
     @property
@@ -149,12 +156,11 @@ class Coin(object):
     @rel_pos.setter
     def rel_pos(self, square):
 
-        # if in finishing block stays in finishing block
+        # if in finishing square, then stay in finishing square
         if self._rel_pos is 57:
             return
 
         self._rel_pos = square
+
+        # Update absolute position
         self.abs_pos = self.rel_to_abs(self._rel_pos)
-        # updating absolute position
-
-
