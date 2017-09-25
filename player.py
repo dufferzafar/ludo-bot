@@ -40,10 +40,42 @@ class Player(object):
     def is_safe(self, rel_pos):
         """checks if a relative position safe or not"""
         safe_squares = [1, 9, 14, 22, 27, 35, 40, 48]  # starting squares plus star squares
-        home_column = [x for x in range(52, 58)]  # TODO? is this necessary
+        home_column = [x for x in range(52, 58)]
         if rel_pos in safe_squares + home_column:
             return True
         return False
+
+    def can_kill(self, die_roll, other_players):
+        """Who can i kill with this die_roll
+           Returns a list of tuple : (killer_coin, target_coin)
+        """
+        # my coins that can kill
+        killer_coins = [coin for coin in self.coins
+                        if coin not in self.on_home_col and  # not in home column
+                        coin not in self.finished_coins and  # not finished
+                        coin not in self.in_jail and  # not in jail
+                        not self.is_safe(coin.rel_pos + die_roll)
+                        # if my future position does not lands on some safe spot
+                        # i.e star or home or starting pos
+                        ]
+
+        # target positions of my killers as per this die roll
+        kill_spots = [coin.rel_to_abs(coin.rel_pos + die_roll)
+                      for coin in killer_coins]
+
+        opponent_coins = []  # all the coins of all the opponents
+        for opponent in other_players:
+            for coin in opponent.coins:
+                opponent_coins.append(coin)
+
+        possible_kills = []
+        for killer_coin, kill_spot in zip(killer_coins, kill_spots):
+            for target_coin in opponent_coins:
+                if kill_spot == target_coin.abs_pos:
+                    possible_kills.append((killer_coin, target_coin))
+
+        return possible_kills
+
     def move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
