@@ -17,7 +17,7 @@ class Board(object):
     home_column = list(range(52, 58))
 
     @staticmethod
-    def is_safe(self, rel_pos):
+    def is_safe(rel_pos):
         """Checks whether a given relative position is safe or not?"""
         if rel_pos in Board.safe_squares + Board.home_column:
             return True
@@ -61,21 +61,24 @@ class Player(object):
         """Who can i kill with this die_roll
            Returns a list of tuple : (killer_coin, target_coin)
         """
-        # my coins that can kill
-        killer_coins = [coin for coin in self.coins
-                        if coin not in self.on_home_col and  # not in home column
-                        coin not in self.finished_coins and  # not finished
-                        coin not in self.in_jail and  # not in jail
-                        not self.is_safe(coin.rel_pos + die_roll)
-                        # if my future position does not lands on some safe spot
-                        # i.e star or home or starting pos
-                        ]
 
-        # target positions of my killers as per this die roll
-        kill_spots = [coin.rel_to_abs(coin.rel_pos + die_roll)
-                      for coin in killer_coins]
+        # My coins that can kill
+        killer_coins = []
+        for coin in self.coins:
+            if (coin not in self.on_home_col and         # not in home column
+                    coin not in self.finished_coins and  # not finished
+                    coin not in self.in_jail):           # not in jail
 
-        opponent_coins = []  # all the coins of all the opponents
+                killer_coins.append(coin)
+
+        # Target positions of my killers as per this die roll
+        kill_spots = [
+            coin.rel_to_abs(coin.rel_pos + die_roll)
+            for coin in killer_coins
+        ]
+
+        # all the coins of all the opponents
+        opponent_coins = []
         for opponent in other_players:
             for coin in opponent.coins:
                 opponent_coins.append(coin)
@@ -83,7 +86,7 @@ class Player(object):
         possible_kills = []
         for killer_coin, kill_spot in zip(killer_coins, kill_spots):
             for target_coin in opponent_coins:
-                if kill_spot == target_coin.abs_pos:
+                if kill_spot == target_coin.abs_pos and not Board.is_safe(kill_spot):
                     possible_kills.append((killer_coin, target_coin))
 
         return possible_kills
