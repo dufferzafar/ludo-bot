@@ -50,6 +50,19 @@ class LudoGame:
             print("Blue_Kills : ", self.players[3].can_kill(die, self.players[0:3]))
             print(" ")
 
+    def move(self, move_str):
+        """
+        Make a coin move.
+
+        Takes in a move string of the form: "<Coin ID>_<Die Roll>"
+        eg: "R0_1" will move Coin 0 of Player Red 1 position ahead.
+
+        Since these moves will be read from the client,
+        they are assumed to be valid.
+        """
+        coin_name, die = move_str.split('_')
+        self.coin_names[coin_name] += die
+
     def play(self):
 
         # Read initial parameters from the client
