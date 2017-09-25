@@ -26,6 +26,14 @@ class Player:
     def in_jail(self):
         """Who is still in the Jail"""
         return [coin for coin in self.coins if coin.rel_pos is 0]
+
+    @property
+    def finished_coins(self):
+        return [coin for coin in self.coins if coin.rel_pos is 57]
+
+    @property
+    def on_home_col(self):
+        return [coin for coin in self.coins if coin.rel_pos >= 52 and coin.rel_pos <= 56]
     def move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
