@@ -71,6 +71,22 @@ class Coin:
     def __repr__(self):
         return self.color[0] + str(self.num)
 
+    def rel_to_abs(self, rel_pos):
+        """Convert relative position to absolute position,
+        Based on color of this coin"""
+        mycolor_index = PLAYER_COLORS.index(self.color)
+        if rel_pos == 0:
+            # inside yard
+            abs_pos = 0
+        elif rel_pos >= 52:
+            # inside home column
+            abs_pos = -1
+            # can be used directly to check whether inside home column or not
+        else:
+            abs_pos = (rel_pos - 1 + 13 * mycolor_index) % 52 + 1
+            # subtracting 1 to make it 0 based then adding 1 to make it 1 based again
+        return abs_pos
+
     @property
     def rel_pos(self):
         """
@@ -91,16 +107,7 @@ class Coin:
             return
 
         self._rel_pos = square
-
+        self.abs_pos = self.rel_to_abs(self._rel_pos)
         # updating absolute position
-        mycolor_index = PLAYER_COLORS.index(self.color)
-        if square == 0:
-            # inside yard
-            self.abs_pos = 0
-        elif square >= 52:
-            # inside home column
-            self.abs_pos = -1
-            # can be used directly to check whether inside home column or not
-        else:
-            self.abs_pos = (self._rel_pos - 1 + 13 * mycolor_index) % 52 + 1
-            # subtracting 1 to make it 0 based then adding 1 to make it 1 based again
+
+
