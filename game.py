@@ -29,9 +29,13 @@ class LudoGame:
         # We could just use two variables player, opponent?
         self.players = [Player(color) for color in PLAYER_COLORS]
 
-        self.coins = []
-        for player in self.players:
-            self.coins.extend(player.coins)
+        # Position of each coin on the board is the core state of the game
+        # Store references to all coins
+        self.coins = {
+            str(coin): coin
+            for player in self.players
+            for coin in player.coins
+        }
 
     def randomize_board(self):
         """
@@ -39,7 +43,7 @@ class LudoGame:
 
         Used while debugging etc.
         """
-        for coin in self.coins:
+        for coin in self.coins.values():
             coin.rel_pos = randint(0, 57)
 
         for die in range(1, 7):

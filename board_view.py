@@ -152,7 +152,7 @@ class BoardView(QGraphicsScene):
 
         return self.rotate((x, y), relative_to)
 
-    def paint(self, coins=[]):
+    def paint(self, coins={}):
         # White Squares
         # Must be drawn before any other colored unit suare
         # Rows
@@ -215,7 +215,7 @@ class BoardView(QGraphicsScene):
             self.addSquare(x + yard_sub, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
 
         # Add coins
-        for coin in coins:
+        for coin in coins.values():
             coords = self.coordinatesOfSquare(coin.rel_pos, relative_to=PLAYER_COLORS.index(coin.color))
 
             # Coin is in yard, and we get a list of coords in that case
