@@ -10,17 +10,18 @@ from random import randint
 from player import Player
 from color_log import ColoredLogs
 
-from config import PLAYER_COLORS
-
-
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 log.addHandler(ColoredLogs(sys.stderr))
 
 
 # These are used to interact with the client
-def read_input():
+def read_line():
     return sys.stdin.readline().strip()
+
+
+def read_moves():
+    return read_line().split("<next>")
 
 
 def write_output(txt):
@@ -31,10 +32,18 @@ def write_output(txt):
 class LudoGame:
 
     def __init__(self):
-        # A Game has 4 players
-        # TODO: Since our games will only ever have 2 players
-        # We could just use two variables player, opponent?
-        self.players = [Player(color) for color in PLAYER_COLORS]
+        # Read initial parameters from the client
+        self.my_player_id, self.time_limit, self.game_mode = map(int, read_line().split(' '))
+        log.debug("Time Limit: %d", self.time_limit)
+        log.debug("My Player ID: %d", self.my_player_id)
+        log.debug("Game Mode: %d", self.game_mode)
+
+        # Our games will only ever have 2 players
+        # TODO: We could just use two variables player & opponent?
+        if self.game_mode == 0:
+            self.players = [Player("RED"), Player("YELLOW")]
+        else:
+            self.players = [Player("BLUE"), Player("GREEN")]
 
         # Position of each coin on the board is the core state of the game
         # Store references to all coins
