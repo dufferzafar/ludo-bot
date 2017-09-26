@@ -62,18 +62,20 @@ class LudoGame:
         for coin in self.coins.values():
             coin.rel_pos = randint(0, 57)
 
-    def move(self, move_str):
+    def make_moves(self, moves):
         """
         Make a coin move.
 
-        Takes in a move string of the form: "<Coin ID>_<Die Roll>"
+        Takes in a list of move strings of the form: "<Coin ID>_<Die Roll>"
         eg: "R0_1" will move Coin 0 of Player Red 1 position ahead.
 
         Since these moves will be read from the client,
         they are assumed to be valid.
         """
-        coin_name, die = move_str.split('_')
-        self.coin_names[coin_name] += die
+        for move in moves:
+            log.debug("Move %s" % move)
+            coin_name, die = move.split('_')
+            self.coins[coin_name] += int(die)
 
     def play(self):
 
