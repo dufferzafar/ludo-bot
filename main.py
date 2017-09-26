@@ -71,6 +71,6 @@ if __name__ == '__main__':
 
     ludo.show()
 
-    # ludo.game.start()
+    ludo.game.start()
 
     sys.exit(app.exec_())
