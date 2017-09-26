@@ -2,6 +2,7 @@
 
 # stdlib
 import sys
+import time
 import logging
 
 from random import randint
@@ -10,6 +11,7 @@ from random import randint
 from player import Player
 from color_log import ColoredLogs
 
+# Setup Colored logging to stderr
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 log.addHandler(ColoredLogs(sys.stderr))
@@ -77,33 +79,74 @@ class LudoGame:
             coin_name, die = move.split('_')
             self.coins[coin_name] += int(die)
 
-    def play(self):
+    def run(self):
 
-        # Read initial parameters from the client
-        time_limit, my_player_id, game_mode = map(int, read_input().split(' '))
+        coin_num = 0
 
-        # Decide whether it is my turn or opponents
+        # I'm the 2nd player
+        if self.my_player_id == 2:
+            dice = read_line()
+            moves = read_moves()
+
+            # Update coin positions using these moves
+            self.make_moves(moves)
+
+        # Track whether the 2nd player is repeating
+        opponent_repeating = False
+
+        # Now it is my turn!
         while True:
 
-            # handle THROW / REPEAT messages
+            # 2nd player is not repeating, so it is my turn!
+            if not opponent_repeating:
 
-            # Roll the die
-            write_output("<THROW>")
+                # Roll the die
+                write_output("<THROW>")
 
-            # Read die rolls from client (stdin)
-            die_rolls = read_input()
+                # Read die rolls from client (stdin)
+                die_rolls = read_line()
 
-            # handle ducks! [0] is returned on rolling 3 sixes
-            if die_rolls == [0]:
-                raise NotImplementedError
+                # handle ducks! [0] is returned on rolling 3 sixes
+                # if die_rolls == [0]:
+                #     raise NotImplementedError
 
-            # it is opponent's turn
-            # wait for their move
-            # move opponent's pieces
+                # Apply strategies to find what next move should be
+                # moves = self.players[0].get_move(die_rolls, self.players[1:])
 
-            # else (it is my turn)
-            moves = self.players[0].move(die_rolls, self.players[1:])
+                # Send the moves to client (stdout)
+                # moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
+                # moves = "\n".join(moves)
 
-            # send the moves to client (stdout)
-            moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
-            moves = "\n".join(moves)
+                coin = self.players[self.my_player_id - 1].coins[coin_num]
+
+                write_output(str(coin) + "_1")
+
+                coin += 1
+
+                if coin.rel_pos == 57:
+                    coin_num += 1
+
+            else:
+                opponent_repeating = False
+
+            # Now read in opponent's dice rolls & moves
+            dice = read_line()
+
+            # If the moves I played didn't result in a REPEAT
+            # The opponent will now get another chance
+            if dice != "REPEAT":
+                moves = read_moves()
+
+                # Opponent made a move that resulted in a REPEAT!
+                # So the next turn won't be mine
+                if moves[-1] == 'REPEAT':
+                    opponent_repeating = True
+
+                    # Remove "REPEAT" from moves list
+                    moves.pop()
+
+                self.make_moves(moves)
+
+            # TODO: Remove these later?
+            time.sleep(0.05)
+            self.update_view.emit(self.coins)
