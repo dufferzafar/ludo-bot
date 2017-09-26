@@ -46,14 +46,6 @@ class LudoGame:
         for coin in self.coins.values():
             coin.rel_pos = randint(0, 57)
 
-        for die in range(1, 7):
-            print("Using die_value:", die)
-            print("Red_Kills : ", self.players[0].can_kill(die, self.players[1:]))
-            print("Green_Kills : ", self.players[1].can_kill(die, self.players[0:1] + self.players[2:]))
-            print("Yellow_Kills : ", self.players[2].can_kill(die, self.players[0:2] + self.players[3:]))
-            print("Blue_Kills : ", self.players[3].can_kill(die, self.players[0:3]))
-            print(" ")
-
     def move(self, move_str):
         """
         Make a coin move.
