@@ -134,6 +134,7 @@ class Coin(object):
 
     def __iadd__(self, die):
         self.rel_pos += die
+        return self
 
     def rel_to_abs(self, rel_pos):
         """
