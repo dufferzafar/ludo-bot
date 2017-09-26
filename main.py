@@ -59,13 +59,6 @@ class ThreadedGame(LudoGame, QtC.QThread):
 
         self.update_view.emit(self.coins)
 
-    def run(self):
-        while True:
-            self.randomize_board()
-            self.update_view.emit(self.coins)
-            time.sleep(5)
-            os.system('clear')
-
 if __name__ == '__main__':
 
     # Close on Ctrl + C from terminal
