@@ -2,6 +2,7 @@
 
 # stdlib
 import sys
+import logging
 
 from random import randint
 
@@ -9,6 +10,16 @@ from random import randint
 from player import Player
 
 from config import PLAYER_COLORS
+
+
+# Setup Logging to stderr
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+
+stream_handler = logging.StreamHandler(sys.stderr)
+stream_handler.setFormatter(logging.Formatter('%(name)s - %(message)s\n'))
+
+log.addHandler(stream_handler)
 
 
 # These are used to interact with the client
