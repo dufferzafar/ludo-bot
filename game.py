@@ -125,24 +125,33 @@ class LudoGame:
 
                 log.info("Received Roll: %s", die_rolls)
 
-                # Apply strategies to find what next move should be
+                # TODO: Consider all possible combinations of moves!
                 all_moves = []
-                for dieroll in die_rolls:  # for each dieroll
-                    moves = self.players[self.my_player_id - 1].get_move([dieroll], opponents)  # get possible move
+                for die in die_rolls:
 
-                    # if move possible
-                    if moves != []:
-                        moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
-                        all_moves += moves  # add it to list of all moves
-                        self.players[self.my_player_id - 1].make_moves(moves, opponents)  # perform those move ( so that next die roll takes decision based on new board state)
+                    # Apply strategies to find what next move should be
+                    moves = self.player.get_move([die], self.opponent)
+
+                    # If moves are possible
+                    if moves:
+
+                        # Convert them to a representation that others understand
+                        moves = ["%s_%d" % (c, d) for (c, d) in moves]
+
+                        # Perform them on the board
+                        # So that next decision is based on updated board state
+                        self.player.make_moves(moves, self.opponent)
+
+                        all_moves += moves
 
                 # if no move possible
-                if(all_moves == []):
+                if not all_moves:
                     all_moves = "NA"
                 else:
                     all_moves = "<next>".join(all_moves)
-                log.info("Sending Moves: %s", all_moves)
+
                 # Send the all_moves to client (stdout)
+                log.info("Sending Moves: %s", all_moves)
                 write_output(all_moves)
 
             else:
