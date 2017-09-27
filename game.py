@@ -98,7 +98,8 @@ class LudoGame:
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
-
+        opponents = [player for i, player in enumerate(self.players)
+                     if i != self.my_player_id - 1]
         # Now it is my turn!
         while True:
 
@@ -117,7 +118,8 @@ class LudoGame:
                 #     raise NotImplementedError
 
                 # Apply strategies to find what next move should be
-                moves = self.players[0].get_move(die_rolls, self.players[1:])
+                moves = self.players[self.my_player_id - 1].get_move(die_rolls, opponents)
+                
                 if moves != []:
                     moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
                     moves = "<next>".join(moves)
