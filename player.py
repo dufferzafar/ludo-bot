@@ -106,9 +106,14 @@ class Player(object):
         # Some will need to called for combinations of inputs?
 
         die = die_rolls[0]
+        possible_kills = self.can_kill(die, other_players)  # all that can be killed by me
 
         if (die == 1 or die == 6) and self.in_jail != []:  # if can open
             return str(self.in_jail[0]) + "_1"
+
+        elif possible_kills != []:  # if kills are possible
+            sorted(possible_kills, key=lambda kill: kill[1].rel_pos)  # sort the possible kills in ascending order of rel pos of targets
+            return str(possible_kills[-1][0]) + "_" + str(die)  # perfom the move that kills the farthest coin of opponent
 
         # if self.can_open(): open
         # elif self.can_kill(): kill
