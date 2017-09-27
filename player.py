@@ -100,12 +100,15 @@ class Player(object):
 
         TODO: Strategies & All decision making
         """
-        raise NotImplementedError
+        # raise NotImplementedError
 
         # TODO: Each of these functions will be called for all die rolls?
         # Some will need to called for combinations of inputs?
 
-        # Alvi's "expert" ludo player
+        die = die_rolls[0]
+
+        if (die == 1 or die == 6) and self.in_jail != []:  # if can open
+            return str(self.in_jail[0]) + "_1"
 
         # if self.can_open(): open
         # elif self.can_kill(): kill

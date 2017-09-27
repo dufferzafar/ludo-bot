@@ -109,7 +109,7 @@ class LudoGame:
                 write_output("<THROW>")
 
                 # Read die rolls from client (stdin)
-                die_rolls = read_line()
+                die_rolls = read_die()
                 log.info("Received Roll: %s", die_rolls)
 
                 # handle ducks! [0] is returned on rolling 3 sixes
