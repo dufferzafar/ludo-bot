@@ -155,7 +155,7 @@ class Player(object):
         elif possible_kills:
             moves.append((possible_kills[-1][0], die))
 
-        # Move a random coin
+        # Move coin that has moved farthest
         else:
 
             # Remove coins which if moved will cause stacking
@@ -174,10 +174,10 @@ class Player(object):
                 (coin.rel_pos + die) not in rel_pos_of_my_coins
             ]
 
-            # Choose a random coin to move
+            # Choose the coin that has moved farthest
             if movable_coins:
-                move_index = randint(0, len(movable_coins) - 1)
-                moves.append((movable_coins[move_index], die))
+                movable_coins.sort(key=lambda c: c.rel_pos)
+                moves.append((movable_coins[-1], die))
 
         return moves
 
