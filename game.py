@@ -31,6 +31,10 @@ def write_output(txt):
     sys.stdout.flush()
 
 
+def read_die():
+    return list(map(int, read_line().split(" ")[2:]))
+
+
 class LudoGame:
 
     def __init__(self):
