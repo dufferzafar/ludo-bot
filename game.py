@@ -79,10 +79,17 @@ class LudoGame:
         Since these moves will be read from the client,
         they are assumed to be valid.
         """
+        if "NA" in moves:
+            moves.remove("NA")
+
         for move in moves:
             log.debug("Making Move: %s" % move)
-            coin_name, die = move.split('_')
-            self.coins[coin_name] += int(die)
+            move_coin_name, die = move.split('_')
+            self.coins[move_coin_name] += int(die)
+
+            for coin_name in self.coins:
+                if coin_name != move_coin_name and self.coins[coin_name].abs_pos == self.coins[move_coin_name].abs_pos:
+                    self.coins[coin_name].rel_pos = 0
 
     def run(self, board_drawn=True):
 
