@@ -34,12 +34,7 @@ class BoardView(QGraphicsScene):
         self.addRect(x, y, size, size, pen=pen, brush=QtG.QBrush(QtG.QColor(color)))
 
     def addSquares(self, start, size, color, count, row=True):
-        """
-        Add count no. of squares to the board.
-
-        TODO: Fixup the row parameter!
-        TODO: All functions take x, y seperately while this takes a tuple start
-        """
+        """Add count no. of squares to the board."""
         for i in range(count):
             x = start[0] + 60 * i * int(row)
             y = start[1] + 60 * i * int(not row)
@@ -100,7 +95,6 @@ class BoardView(QGraphicsScene):
     def coordinatesOfSquare(self, square, relative_to=0):
         """Get coordinates for a square whose position is given relative to some player."""
 
-        # TODO: Handle the case for yard
         if (square == 0):
             rotate_relative = functools.partial(self.rotate, relative_to=relative_to)
             return list(map(rotate_relative, BoardConfig.YARD_COINS))

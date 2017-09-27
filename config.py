@@ -1,5 +1,4 @@
 
-# TODO: enum? some other defintion?
 PLAYER_COLORS = ["RED", "GREEN", "YELLOW", "BLUE"]
 
 

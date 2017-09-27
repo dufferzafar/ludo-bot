@@ -135,14 +135,7 @@ class Player(object):
         Use positions of other players to make a move.
 
         Returns a list of tuples: [(coin, die_roll), ...]
-
-        TODO: Strategies & All decision making
         """
-        # raise NotImplementedError
-
-        # TODO: Each of these functions will be called for all die rolls?
-        # Some will need to called for combinations of inputs?
-
         moves = []
 
         die = die_rolls[0]
