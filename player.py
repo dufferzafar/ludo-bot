@@ -125,6 +125,9 @@ class Player(object):
                 if str(coin) == move_coin_name:
                     move_coin = coin
 
+            if move_coin.rel_pos == 0 and die == '6':
+                die = '1'
+
             move_coin += int(die)  # move my coin
 
             for coin in opponent_coins:  # if my coin kills someone then place them back in their yards
