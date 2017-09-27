@@ -154,8 +154,10 @@ class Player(object):
             moves.append((self.in_jail[0], die))
 
         elif possible_kills != []:  # if kills are possible
-            sorted(possible_kills, key=lambda kill: kill[1].rel_pos)  # sort the possible kills in ascending order of rel pos of targets
-            moves.append((possible_kills[-1][0], die))  # perfom the move that kills the farthest coin of opponent
+            # sort the possible kills in ascending order of rel pos of targets
+            sorted(possible_kills, key=lambda kill: kill[1].rel_pos)
+            # perfom the move that kills the farthest coin of opponent
+            moves.append((possible_kills[-1][0], die))
 
         else:
             # coins that can move using this die roll
@@ -166,14 +168,20 @@ class Player(object):
                              ]
 
             # remove coins which if moved will cause stacking
-            rel_pos_of_my_coins = [coin.rel_pos for coin in self.coins.values()]  # rel_pos of my coins
+            # rel_pos of my coins
+            rel_pos_of_my_coins = [
+                coin.rel_pos for coin in self.coins.values()]
 
             movable_coins = [coin for coin in movable_coins
-                             if Board.is_safe(coin.rel_pos + die) or  # either this coin moves to a safe square (stacking allowed)
-                             (coin.rel_pos + die) not in rel_pos_of_my_coins  # or does not cause stacking
+                             # either this coin moves to a safe square
+                             # (stacking allowed)
+                             if Board.is_safe(coin.rel_pos + die) or
+                             # or does not cause stacking
+                             (coin.rel_pos + die) not in rel_pos_of_my_coins
                              ]
             if (movable_coins != []):
-                move_index = randint(0, len(movable_coins) - 1)  # choose a random move from possible moves
+                # choose a random move from possible moves
+                move_index = randint(0, len(movable_coins) - 1)
                 moves.append((movable_coins[move_index], die))
 
         return moves
@@ -228,7 +236,7 @@ class Coin(object):
             # inside home column or not
         else:
             abs_pos = (rel_pos - 1 + 13 * mycolor_index) % 52 + 1
-            # Subtracting 1 to make it 0 based then adding 1 to make it 1 based again
+            # Subtract 1 to make it 0 based; add it back to make 1 based again
         return abs_pos
 
     @property
