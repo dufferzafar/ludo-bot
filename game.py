@@ -40,10 +40,17 @@ class LudoGame:
     def __init__(self):
 
         # Read initial parameters from the client
-        self.my_player_id, self.time_limit, self.game_mode = map(int, read_line().split(' '))
+        init = map(int, read_line().split(' '))
+
+        self.my_player_id = init[0]
+        self.time_limit = init[1]
+        self.game_mode = init[2]
+        self.draw_board = bool(init[3])
+
         log.debug("Time Limit: %d", self.time_limit)
         log.debug("My Player ID: %d", self.my_player_id)
         log.debug("Game Mode: %d", self.game_mode)
+        log.debug("Drawing Board: %d", self.draw_board)
 
         # Our games will only ever have 2 players
         # TODO: We could just use two variables player & opponent?
@@ -92,8 +99,6 @@ class LudoGame:
                     self.coins[coin_name].rel_pos = 0
 
     def run(self, board_drawn=True):
-
-        coin_num = 0
 
         # I'm the 2nd player
         if self.my_player_id == 2:
