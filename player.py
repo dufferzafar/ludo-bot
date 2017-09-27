@@ -263,3 +263,15 @@ class Coin(object):
 
         # Update absolute position
         self.abs_pos = self.rel_to_abs(self._rel_pos)
+
+
+def main():
+    p1 = Player("RED")
+    p2 = Player("GREEN")
+    p1.coins[0].rel_pos = 1
+    p1.coins[1].rel_pos = 4
+    print(p1.get_move([3], [p2]))
+
+
+if __name__ == '__main__':
+    main()
