@@ -124,6 +124,13 @@ class Player(object):
                              coin.rel_pos <= 57 - die  # and move is allowed
                              ]
 
+            # remove coins which if moved will cause stacking
+            rel_pos_of_my_coins = [coin.rel_pos for coin in self.coins]  # rel_pos of my coins
+
+            movable_coins = [coin for coin in movable_coins
+                             if Board.is_safe(coin.rel_pos + die) or  # either this coin moves to a safe square (stacking allowed)
+                             (coin.rel_pos + die) not in rel_pos_of_my_coins  # or does not cause stacking
+                             ]
 
             if movable_coins == []:
                 return "NA"
