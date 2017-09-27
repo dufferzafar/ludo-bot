@@ -106,15 +106,16 @@ class Player(object):
         # TODO: Each of these functions will be called for all die rolls?
         # Some will need to called for combinations of inputs?
 
+        moves = []
         die = die_rolls[0]
         possible_kills = self.can_kill(die, other_players)  # all that can be killed by me
 
         if (die == 1 or die == 6) and self.in_jail != []:  # if can open
-            return str(self.in_jail[0]) + "_1"
+            moves.append((self.in_jail[0], 1))
 
         elif possible_kills != []:  # if kills are possible
             sorted(possible_kills, key=lambda kill: kill[1].rel_pos)  # sort the possible kills in ascending order of rel pos of targets
-            return str(possible_kills[-1][0]) + "_" + str(die)  # perfom the move that kills the farthest coin of opponent
+            moves.append((possible_kills[-1][0], die))  # perfom the move that kills the farthest coin of opponent
 
         else:
             # coins that can move using this die roll
@@ -132,11 +133,10 @@ class Player(object):
                              (coin.rel_pos + die) not in rel_pos_of_my_coins  # or does not cause stacking
                              ]
 
-            if movable_coins == []:
-                return "NA"
             move_index = randint(0, len(movable_coins) - 1)  # choose a random move from possible moves
-            return str(movable_coins[move_index]) + "_" + str(die)
+            moves.append((movable_coins[move_index], die))
 
+        return moves
         # Alvi's "expert" ludo player
         # if self.can_open(): open
         # elif self.can_kill(): kill
