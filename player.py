@@ -65,7 +65,7 @@ class Player(object):
         """Which coins are on home column?"""
         return [c for c in self.coins if 52 <= c.rel_pos <= 56]
 
-    def can_kill(self, die_roll, other_players):
+    def can_kill(self, die_roll, opponent):
         """Who can i kill with this die_roll
            Returns a list of tuple : (killer_coin, target_coin)
         """
@@ -86,21 +86,15 @@ class Player(object):
             for coin in killer_coins
         ]
 
-        # all the coins of all the opponents
-        opponent_coins = []
-        for opponent in other_players:
-            for coin in opponent.coins:
-                opponent_coins.append(coin)
-
         possible_kills = []
         for killer_coin, kill_spot in zip(killer_coins, kill_spots):
-            for target_coin in opponent_coins:
+            for target_coin in opponent.coins.values():
                 if kill_spot == target_coin.abs_pos:
                     possible_kills.append((killer_coin, target_coin))
 
         return possible_kills
 
-    def make_moves(self, moves, other_players):
+    def make_moves(self, moves, opponent):
         """
         Make a coin move.
 
@@ -113,12 +107,9 @@ class Player(object):
         if "NA" in moves:  # if no move then do nothing
             return
 
-        opponent_coins = []  # list of opponent coins
-        for player in other_players:
-            opponent_coins += player.coins
-
-        for move in moves: 
+        for move in moves:
             log.debug("Making Move: %s" % move)
+
             move_coin_name, die = move.split('_')
 
             for coin in self.coins:  # which coin to move
@@ -130,16 +121,13 @@ class Player(object):
 
             move_coin += int(die)  # move my coin
 
-            for coin in opponent_coins:  # if my coin kills someone then place them back in their yards
+            # if my coin kills someone then place them back in their yards
+            for coin in opponent.coins.values():
                 if(coin.abs_pos == move_coin.abs_pos and
                    not Board.is_safe(coin.rel_pos)):
                     coin.rel_pos = 0
 
-        log.debug("Positions of coins are:\n")
-        for coin in self.coins:
-            log.debug(str(coin) + ": " + str(coin.rel_pos))
-
-    def get_move(self, die_rolls, other_players):
+    def get_move(self, die_rolls, opponent):
         """
         Use positions of other players to make a move.
 
@@ -153,8 +141,11 @@ class Player(object):
         # Some will need to called for combinations of inputs?
 
         moves = []
+
         die = die_rolls[0]
-        possible_kills = self.can_kill(die, other_players)  # all that can be killed by me
+
+        # Find all possible kills I can make using this die
+        possible_kills = self.can_kill(die, opponent)
 
         if (die == 1 or die == 6) and self.in_jail != []:  # if can open
             moves.append((self.in_jail[0], die))

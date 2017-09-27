@@ -43,22 +43,24 @@ class LudoGame:
         # Read initial parameters from the client
         init = list(map(int, read_line().split(' ')))
 
-        self.my_player_id = init[0]
+        self.my_id = init[0]
         self.time_limit = init[1]
         self.game_mode = init[2]
         self.draw_board = bool(init[3])
 
         log.debug("Time Limit: %d", self.time_limit)
-        log.debug("My Player ID: %d", self.my_player_id)
+        log.debug("My Player ID: %d", self.my_id)
         log.debug("Game Mode: %d", self.game_mode)
         log.debug("Drawing Board: %d", self.draw_board)
 
         # Our games will only ever have 2 players
-        # TODO: We could just use two variables player & opponent?
         if self.game_mode == 0:
-            self.players = [Player("RED"), Player("YELLOW")]
+            colors = ["RED", "YELLOW"]
         else:
-            self.players = [Player("BLUE"), Player("GREEN")]
+            colors = ["BLUE", "GREEN"]
+
+        self.player = Player(colors[(self.my_id + 1) % 2])
+        self.opponent = Player(colors[self.my_id % 2])
 
         # Position of each coin on the board is the core state of the game
         # Store references to all coins
@@ -72,7 +74,7 @@ class LudoGame:
         """Serialize the state of the game."""
         s = ""
         # TODO: Players is not really required in state ?
-        s += "Players: " + ", ".join([p.color for p in self.players])
+        s += "Players: " + "%s, %s" % (self.player.color, self.opponent.color)
         s += "\n"
         s += "Coins: " + ", ".join(["%s_%d" % (c, c.rel_pos) for c in self.coins.values()])
         return s
@@ -83,7 +85,8 @@ class LudoGame:
         # Break second part into a list
         _list = lambda s: s.strip().split(": ")[1].split(", ")
 
-        self.players = [Player(color) for color in _list(players)]
+        self.player = Player(_list(players)[0])
+        self.opponent = Player(_list(players)[1])
 
         # A list of coin states
         coin_objects = {}
@@ -97,18 +100,16 @@ class LudoGame:
     def run(self, board_drawn=True):
 
         # I'm the 2nd player
-        if self.my_player_id == 2:
+        if self.my_id == 2:
             dice = read_line()
             moves = read_moves()
 
             # Update coin positions using these moves
-            self.players[0].make_moves(moves, [self.players[1]])
+            self.opponent.make_moves(moves, self.player)
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
-        opponents = [player for i, player in enumerate(self.players)
-                     if i != self.my_player_id - 1]
-        # Now it is my turn!
+
         while True:
 
             log.warn(self.dump_state())
@@ -163,7 +164,7 @@ class LudoGame:
                     # Remove "REPEAT" from moves list
                     moves.pop()
 
-                opponents[0].make_moves(moves, [self.players[self.my_player_id - 1]])
+                self.opponent.make_moves(moves, self.player)
 
             if board_drawn:
                 self.update_board.emit(self.coins)
