@@ -32,7 +32,10 @@ def write_output(txt):
 
 
 def read_die():
-    return list(map(int, read_line().split(" ")[2:]))
+    die = read_line()
+    if "DUCK" in die:
+        return []
+    return list(map(int, die.split(" ")[2:]))
 
 
 class LudoGame:
