@@ -1,16 +1,9 @@
 """
 This module deals with the logical representation of a Board, Player and Coins.
 """
-import sys
-import logging
 
 from config import PLAYER_COLORS
-from random import randint
-from color_log import ColoredLogs
-
-log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
-log.addHandler(ColoredLogs(sys.stderr))
+from config import log
 
 
 class Board(object):

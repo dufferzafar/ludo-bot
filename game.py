@@ -3,16 +3,10 @@
 # stdlib
 import sys
 import time
-import logging
 
 # Our Code
 from player import Player, Coin
-from color_log import ColoredLogs
-
-# Setup Colored logging to stderr
-log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
-log.addHandler(ColoredLogs(sys.stderr))
+from config import log
 
 
 # These are used to interact with the client

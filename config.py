@@ -1,4 +1,14 @@
 
+# Setup Colored logging to stderr
+import sys
+import logging
+
+from color_log import ColoredLogs
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+log.addHandler(ColoredLogs(sys.stderr))
+
 PLAYER_COLORS = ["RED", "GREEN", "YELLOW", "BLUE"]
 
 
