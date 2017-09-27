@@ -68,8 +68,19 @@ class Player(object):
         """Which coins are on home column?"""
         return [c for c in self.coins.values() if 52 <= c.rel_pos <= 56]
 
-    def can_kill(self, die_roll, opponent):
-        """Who can i kill with this die_roll
+    def movable_coins(self, die):
+        """Coins which can move on a die roll."""
+
+        return [
+            coin for coin in self.coins.values()
+            if (coin not in self.on_home_col and     # not on home column
+                coin not in self.finished_coins and  # not finished
+                coin not in self.in_jail and         # not in jail
+                coin.rel_pos <= 57 - die)            # move is allowed
+        ]
+
+    def can_kill(self, die, opponent):
+        """Who can i kill with this die roll
            Returns a list of tuple : (killer_coin, target_coin)
         """
 
