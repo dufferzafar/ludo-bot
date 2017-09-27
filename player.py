@@ -3,6 +3,7 @@ This module deals with the logical representation of a Board, Player and Coins.
 """
 
 from config import PLAYER_COLORS
+from random import randint
 
 
 class Board(object):
@@ -115,6 +116,21 @@ class Player(object):
             sorted(possible_kills, key=lambda kill: kill[1].rel_pos)  # sort the possible kills in ascending order of rel pos of targets
             return str(possible_kills[-1][0]) + "_" + str(die)  # perfom the move that kills the farthest coin of opponent
 
+        else:
+            # coins that can move using this die roll
+            movable_coins = [coin for coin in self.coins
+                             if coin not in self.in_jail and  # not in jail
+                             coin not in self.finished_coins and  # not yet finished
+                             coin.rel_pos <= 57 - die  # and move is allowed
+                             ]
+
+
+            if movable_coins == []:
+                return "NA"
+            move_index = randint(0, len(movable_coins) - 1)  # choose a random move from possible moves
+            return str(movable_coins[move_index]) + "_" + str(die)
+
+        # Alvi's "expert" ludo player
         # if self.can_open(): open
         # elif self.can_kill(): kill
         # elif self.can_die(): protect
