@@ -43,27 +43,30 @@ class Player(object):
         self.color = color
 
         # Each Player has 4 Coins
-        self.coins = [Coin(color, idx) for idx in range(0, 4)]
+        self.coins = {}
+        for idx in range(0, 4):
+            coin = Coin(color, idx)
+            self.coins[str(coin)] = coin
 
     @property
     def percent(self):
         """How much game have I completed?"""
-        return sum([25 * (c.rel_pos / 57) for c in self.coins])
+        return sum([25 * (c.rel_pos / 57) for c in self.coins.values()])
 
     @property
     def in_jail(self):
         """Which coins are still in the Jail?"""
-        return [c for c in self.coins if c.rel_pos == 0]
+        return [c for c in self.coins.values() if c.rel_pos == 0]
 
     @property
     def finished_coins(self):
         """Which coins have reached finishing square?"""
-        return [c for c in self.coins if c.rel_pos == 57]
+        return [c for c in self.coins.values() if c.rel_pos == 57]
 
     @property
     def on_home_col(self):
         """Which coins are on home column?"""
-        return [c for c in self.coins if 52 <= c.rel_pos <= 56]
+        return [c for c in self.coins.values() if 52 <= c.rel_pos <= 56]
 
     def can_kill(self, die_roll, opponent):
         """Who can i kill with this die_roll
@@ -72,7 +75,7 @@ class Player(object):
 
         # My coins that can kill
         killer_coins = []
-        for coin in self.coins:
+        for coin in self.coins.values():
             if (coin not in self.on_home_col and         # not in home column
                     coin not in self.finished_coins and  # not finished
                     coin not in self.in_jail and         # not in jail
@@ -104,27 +107,27 @@ class Player(object):
         Since these moves will be read from the client,
         they are assumed to be valid.
         """
-        if "NA" in moves:  # if no move then do nothing
+        # No move to play
+        if "NA" in moves:
             return
 
         for move in moves:
             log.debug("Making Move: %s" % move)
 
             move_coin_name, die = move.split('_')
+            coin_to_move = self.coins[move_coin_name]
 
-            for coin in self.coins:  # which coin to move
-                if str(coin) == move_coin_name:
-                    move_coin = coin
-
-            if move_coin.rel_pos == 0 and die == '6':
+            # Even if you open with 6, you still move 1 step
+            if coin_to_move.rel_pos == 0 and die == '6':
                 die = '1'
 
-            move_coin += int(die)  # move my coin
+            # Move my coin
+            coin_to_move += int(die)
 
-            # if my coin kills someone then place them back in their yards
+            # If my coin killed someone then place them back in their yards
             for coin in opponent.coins.values():
-                if(coin.abs_pos == move_coin.abs_pos and
-                   not Board.is_safe(coin.rel_pos)):
+                if (coin.abs_pos == coin_to_move.abs_pos and
+                        not Board.is_safe(coin.rel_pos)):
                     coin.rel_pos = 0
 
     def get_move(self, die_rolls, opponent):
@@ -156,14 +159,14 @@ class Player(object):
 
         else:
             # coins that can move using this die roll
-            movable_coins = [coin for coin in self.coins
+            movable_coins = [coin for coin in self.coins.values()
                              if coin not in self.in_jail and  # not in jail
                              coin not in self.finished_coins and  # not yet finished
                              coin.rel_pos <= 57 - die  # and move is allowed
                              ]
 
             # remove coins which if moved will cause stacking
-            rel_pos_of_my_coins = [coin.rel_pos for coin in self.coins]  # rel_pos of my coins
+            rel_pos_of_my_coins = [coin.rel_pos for coin in self.coins.values()]  # rel_pos of my coins
 
             movable_coins = [coin for coin in movable_coins
                              if Board.is_safe(coin.rel_pos + die) or  # either this coin moves to a safe square (stacking allowed)

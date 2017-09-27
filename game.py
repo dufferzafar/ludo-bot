@@ -64,11 +64,8 @@ class LudoGame:
 
         # Position of each coin on the board is the core state of the game
         # Store references to all coins
-        self.coins = {
-            str(coin): coin
-            for player in self.players
-            for coin in player.coins
-        }
+        self.coins = self.player.coins.copy()
+        self.coins.update(self.opponent.coins)
 
     def dump_state(self):
         """Serialize the state of the game."""
