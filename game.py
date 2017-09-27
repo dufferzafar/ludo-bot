@@ -38,6 +38,7 @@ def read_die():
 class LudoGame:
 
     def __init__(self):
+
         # Read initial parameters from the client
         self.my_player_id, self.time_limit, self.game_mode = map(int, read_line().split(' '))
         log.debug("Time Limit: %d", self.time_limit)
@@ -83,7 +84,7 @@ class LudoGame:
             coin_name, die = move.split('_')
             self.coins[coin_name] += int(die)
 
-    def run(self):
+    def run(self, board_drawn=True):
 
         coin_num = 0
 
@@ -152,6 +153,10 @@ class LudoGame:
 
                 self.make_moves(moves)
 
-            # TODO: Remove these later?
+            if board_drawn:
+                time.sleep(0.25)
             self.update_board.emit(self.coins)
-            time.sleep(0.05)
+
+if __name__ == '__main__':
+    g = LudoGame()
+    g.run(board_drawn=False)
