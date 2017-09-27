@@ -7,8 +7,6 @@ This is what should be run from the CLI: python main.py
 # Python stdlib
 import sys
 import signal
-import time
-import os
 
 # PyQt Imports
 from PyQt5 import QtCore as QtC
@@ -37,7 +35,7 @@ class LudoApp(QGraphicsView):
         self.setScene(self.board)
 
         self.game = ThreadedGame()
-        self.game.update_view.connect(self.board.paint)
+        self.game.update_board.connect(self.board.paint)
 
         self.board.paint(self.game.coins)
 
@@ -51,13 +49,13 @@ class LudoApp(QGraphicsView):
 
 class ThreadedGame(LudoGame, QtC.QThread):
 
-    update_view = QtC.pyqtSignal(object)
+    update_board = QtC.pyqtSignal(object)
 
     def __init__(self):
         LudoGame.__init__(self)
         QtC.QThread.__init__(self)
 
-        self.update_view.emit(self.coins)
+        self.update_board.emit(self.coins)
 
 if __name__ == '__main__':
 

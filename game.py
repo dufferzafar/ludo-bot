@@ -153,5 +153,5 @@ class LudoGame:
                 self.make_moves(moves)
 
             # TODO: Remove these later?
+            self.update_board.emit(self.coins)
             time.sleep(0.05)
-            self.update_view.emit(self.coins)
