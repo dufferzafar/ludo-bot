@@ -94,7 +94,7 @@ class LudoGame:
             moves = read_moves()
 
             # Update coin positions using these moves
-            self.make_moves(moves)
+            # self.make_moves(moves)
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
@@ -118,13 +118,13 @@ class LudoGame:
 
                 # Apply strategies to find what next move should be
                 moves = self.players[0].get_move(die_rolls, self.players[1:])
-
-                # Send the moves to client (stdout)
-                moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
-                moves = "<next>".join(moves)
-
+                if moves != []:
+                    moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
+                    moves = "<next>".join(moves)
+                else:
+                    moves = "NA"
                 log.info("Sending Moves: %s", moves)
-
+                # Send the moves to client (stdout)
                 write_output(moves)
 
             else:
@@ -146,7 +146,7 @@ class LudoGame:
                     # Remove "REPEAT" from moves list
                     moves.pop()
 
-                self.make_moves(moves)
+                # self.make_moves(moves)
 
             if board_drawn:
                 time.sleep(0.25)

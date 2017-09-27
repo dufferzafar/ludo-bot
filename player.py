@@ -132,9 +132,9 @@ class Player(object):
                              if Board.is_safe(coin.rel_pos + die) or  # either this coin moves to a safe square (stacking allowed)
                              (coin.rel_pos + die) not in rel_pos_of_my_coins  # or does not cause stacking
                              ]
-
-            move_index = randint(0, len(movable_coins) - 1)  # choose a random move from possible moves
-            moves.append((movable_coins[move_index], die))
+            if (movable_coins != []):
+                move_index = randint(0, len(movable_coins) - 1)  # choose a random move from possible moves
+                moves.append((movable_coins[move_index], die))
 
         return moves
         # Alvi's "expert" ludo player
