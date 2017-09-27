@@ -102,27 +102,6 @@ class LudoGame:
         for coin in self.coins.values():
             coin.rel_pos = randint(0, 57)
 
-    def make_moves(self, moves):
-        """
-        Make a coin move.
-
-        Takes in a list of move strings of the form: "<Coin ID>_<Die Roll>"
-        eg: "R0_1" will move Coin 0 of Player Red 1 position ahead.
-
-        Since these moves will be read from the client,
-        they are assumed to be valid.
-        """
-        if "NA" in moves:
-            moves.remove("NA")
-
-        for move in moves:
-            log.debug("Making Move: %s" % move)
-            move_coin_name, die = move.split('_')
-            self.coins[move_coin_name] += int(die)
-
-            for coin_name in self.coins:
-                if coin_name != move_coin_name and self.coins[coin_name].abs_pos == self.coins[move_coin_name].abs_pos:
-                    self.coins[coin_name].rel_pos = 0
 
     def run(self, board_drawn=True):
 
@@ -132,7 +111,7 @@ class LudoGame:
             moves = read_moves()
 
             # Update coin positions using these moves
-            self.make_moves(moves)
+            self.players[0].make_moves(moves, [self.players[1]])
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
@@ -151,10 +130,11 @@ class LudoGame:
 
                 # Read die rolls from client (stdin)
                 die_rolls = read_die()
+
                 log.info("Received Roll: %s", die_rolls)
 
                 # handle ducks! [0] is returned on rolling 3 sixes
-                # if die_rolls == [0]:
+                # if "DUCK" in die_rolls:
                 #     raise NotImplementedError
 
                 # Apply strategies to find what next move should be
@@ -166,7 +146,7 @@ class LudoGame:
                     if moves != []:
                         moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
                         all_moves += moves  # add it to list of all moves
-                        self.make_moves(moves)  # perform those move ( so that next die roll takes decision based on new board state)
+                        self.players[self.my_player_id - 1].make_moves(moves, opponents)  # perform those move ( so that next die roll takes decision based on new board state)
 
                 # if no move possible
                 if(all_moves == []):
@@ -196,11 +176,11 @@ class LudoGame:
                     # Remove "REPEAT" from moves list
                     moves.pop()
 
-                self.make_moves(moves)
+                opponents[0].make_moves(moves, [self.players[self.my_player_id - 1]])
 
             if board_drawn:
-                time.sleep(0.25)
                 self.update_board.emit(self.coins)
+                time.sleep(1)
 
 
 if __name__ == '__main__':

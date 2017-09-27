@@ -1,9 +1,16 @@
 """
 This module deals with the logical representation of a Board, Player and Coins.
 """
+import sys
+import logging
 
 from config import PLAYER_COLORS
 from random import randint
+from color_log import ColoredLogs
+
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+log.addHandler(ColoredLogs(sys.stderr))
 
 
 class Board(object):
@@ -92,6 +99,38 @@ class Player(object):
                     possible_kills.append((killer_coin, target_coin))
 
         return possible_kills
+
+    def make_moves(self, moves, other_players):
+        """
+        Make a coin move.
+
+        Takes in a list of move strings of the form: "<Coin ID>_<Die Roll>"
+        eg: "R0_1" will move Coin 0 of Player Red 1 position ahead.
+
+        Since these moves will be read from the client,
+        they are assumed to be valid.
+        """
+        if "NA" in moves:  # if no move then do nothing
+            return
+
+        opponent_coins = []  # list of opponent coins
+        for player in other_players:
+            opponent_coins += player.coins
+
+        for move in moves: 
+            log.debug("Making Move: %s" % move)
+            move_coin_name, die = move.split('_')
+
+            for coin in self.coins:  # which coin to move
+                if str(coin) == move_coin_name:
+                    move_coin = coin
+
+            move_coin += int(die)  # move my coin
+
+            for coin in opponent_coins:  # if my coin kills someone then place them back in their yards
+                if(coin.abs_pos == move_coin.abs_pos and
+                   not Board.is_safe(coin.rel_pos)):
+                    coin.rel_pos = 0
 
     def get_move(self, die_rolls, other_players):
         """
