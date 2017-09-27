@@ -117,20 +117,15 @@ class LudoGame:
                 #     raise NotImplementedError
 
                 # Apply strategies to find what next move should be
-                # moves = self.players[0].get_move(die_rolls, self.players[1:])
+                moves = self.players[0].get_move(die_rolls, self.players[1:])
 
                 # Send the moves to client (stdout)
-                # moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
-                # moves = "\n".join(moves)
+                moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
+                moves = "<next>".join(moves)
 
-                coin = self.players[self.my_player_id - 1].coins[coin_num]
+                log.info("Sending Moves: %s", moves)
 
-                write_output(str(coin) + "_1")
-
-                coin += 1
-
-                if coin.rel_pos == 57:
-                    coin_num += 1
+                write_output(moves)
 
             else:
                 opponent_repeating = False
