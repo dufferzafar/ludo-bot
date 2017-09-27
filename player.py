@@ -85,28 +85,21 @@ class Player(object):
         """
 
         # My coins that can kill
-        killer_coins = []
-        for coin in self.coins.values():
-            if (coin not in self.on_home_col and         # not in home column
-                    coin not in self.finished_coins and  # not finished
-                    coin not in self.in_jail and         # not in jail
-                    not Board.is_safe(coin.rel_pos + die_roll)):
-
-                killer_coins.append(coin)
-
-        # Target positions of my killers as per this die roll
-        kill_spots = [
-            coin.rel_to_abs(coin.rel_pos + die_roll)
-            for coin in killer_coins
+        killers = [
+            # Coin and the Position it will move to
+            (coin, coin.rel_pos + die)
+            for coin in self.movable_coins(die)
+            if not Board.is_safe(coin.rel_pos + die)
         ]
 
         possible_kills = []
-        for killer_coin, kill_spot in zip(killer_coins, kill_spots):
-            for target_coin in opponent.coins.values():
-                if kill_spot == target_coin.abs_pos:
-                    possible_kills.append((killer_coin, target_coin))
+        for killer, kill_spot in killers:
+            for target in opponent.coins.values():
+                if kill_spot == target.abs_pos:
+                    possible_kills.append((killer, target))
 
-        return possible_kills
+        # Sort the possible kills in ascending order of rel_pos of targets
+        return sorted(possible_kills, key=lambda target: target[1].rel_pos)
 
     def make_moves(self, moves, opponent):
         """
