@@ -101,7 +101,7 @@ class LudoGame:
             moves = read_moves()
 
             # Update coin positions using these moves
-            # self.make_moves(moves)
+            self.make_moves(moves)
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
@@ -125,16 +125,24 @@ class LudoGame:
                 #     raise NotImplementedError
 
                 # Apply strategies to find what next move should be
-                moves = self.players[self.my_player_id - 1].get_move(die_rolls, opponents)
-                
-                if moves != []:
-                    moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
-                    moves = "<next>".join(moves)
+                all_moves = []
+                for dieroll in die_rolls:  # for each dieroll
+                    moves = self.players[self.my_player_id - 1].get_move([dieroll], opponents)  # get possible move
+
+                    # if move possible
+                    if moves != []:
+                        moves = ["%s_%d" % (coin, die_roll) for (coin, die_roll) in moves]
+                        all_moves += moves  # add it to list of all moves
+                        self.make_moves(moves)  # perform those move ( so that next die roll takes decision based on new board state)
+
+                # if no move possible
+                if(all_moves == []):
+                    all_moves = "NA"
                 else:
-                    moves = "NA"
-                log.info("Sending Moves: %s", moves)
-                # Send the moves to client (stdout)
-                write_output(moves)
+                    all_moves = "<next>".join(all_moves)
+                log.info("Sending Moves: %s", all_moves)
+                # Send the all_moves to client (stdout)
+                write_output(all_moves)
 
             else:
                 opponent_repeating = False
@@ -155,11 +163,12 @@ class LudoGame:
                     # Remove "REPEAT" from moves list
                     moves.pop()
 
-                # self.make_moves(moves)
+                self.make_moves(moves)
 
             if board_drawn:
                 time.sleep(0.25)
-            self.update_board.emit(self.coins)
+                self.update_board.emit(self.coins)
+
 
 if __name__ == '__main__':
     g = LudoGame()
