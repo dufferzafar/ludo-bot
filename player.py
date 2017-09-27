@@ -93,7 +93,7 @@ class Player(object):
 
         return possible_kills
 
-    def move(self, die_rolls, other_players):
+    def get_move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
 
