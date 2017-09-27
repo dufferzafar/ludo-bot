@@ -111,7 +111,7 @@ class Player(object):
         possible_kills = self.can_kill(die, other_players)  # all that can be killed by me
 
         if (die == 1 or die == 6) and self.in_jail != []:  # if can open
-            moves.append((self.in_jail[0], 1))
+            moves.append((self.in_jail[0], die))
 
         elif possible_kills != []:  # if kills are possible
             sorted(possible_kills, key=lambda kill: kill[1].rel_pos)  # sort the possible kills in ascending order of rel pos of targets
