@@ -147,41 +147,40 @@ class Player(object):
         # Find all possible kills I can make using this die
         possible_kills = self.can_kill(die, opponent)
 
-        if (die == 1 or die == 6) and self.in_jail != []:  # if can open
+        # Open the lowest coin from jail
+        if (die in [1, 6]) and self.in_jail:
             moves.append((self.in_jail[0], die))
 
-        elif possible_kills != []:  # if kills are possible
-            # sort the possible kills in ascending order of rel pos of targets
-            sorted(possible_kills, key=lambda kill: kill[1].rel_pos)
-            # perfom the move that kills the farthest coin of opponent
+        # Kill opponent's farthest possible coin
+        elif possible_kills:
             moves.append((possible_kills[-1][0], die))
 
+        # Move a random coin
         else:
-            # coins that can move using this die roll
-            movable_coins = [coin for coin in self.coins.values()
-                             if coin not in self.in_jail and  # not in jail
-                             coin not in self.finished_coins and  # not yet finished
-                             coin.rel_pos <= 57 - die  # and move is allowed
-                             ]
 
-            # remove coins which if moved will cause stacking
-            # rel_pos of my coins
+            # Remove coins which if moved will cause stacking
             rel_pos_of_my_coins = [
-                coin.rel_pos for coin in self.coins.values()]
+                coin.rel_pos
+                for coin in self.coins.values()
+            ]
 
-            movable_coins = [coin for coin in movable_coins
-                             # either this coin moves to a safe square
-                             # (stacking allowed)
-                             if Board.is_safe(coin.rel_pos + die) or
-                             # or does not cause stacking
-                             (coin.rel_pos + die) not in rel_pos_of_my_coins
-                             ]
-            if (movable_coins != []):
-                # choose a random move from possible moves
+            # TODO: Should this logic be a part of Player.movable_coins()
+            movable_coins = [
+                coin for coin in self.movable_coins(die)
+                # either this coin moves to a safe square
+                # (where stacking is allowed)
+                if Board.is_safe(coin.rel_pos + die) or
+                # or it does not cause stacking
+                (coin.rel_pos + die) not in rel_pos_of_my_coins
+            ]
+
+            # Choose a random coin to move
+            if movable_coins:
                 move_index = randint(0, len(movable_coins) - 1)
                 moves.append((movable_coins[move_index], die))
 
         return moves
+
         # Alvi's "expert" ludo player
         # if self.can_open(): open
         # elif self.can_kill(): kill
