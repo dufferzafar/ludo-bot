@@ -5,8 +5,6 @@ import sys
 import time
 import logging
 
-from random import randint
-
 # Our Code
 from player import Player, Coin
 from color_log import ColoredLogs
@@ -96,16 +94,6 @@ class LudoGame:
 
         self.coins = coin_objects
 
-    def randomize_board(self):
-        """
-        Assign random positions to coins.
-
-        Used while debugging etc.
-        """
-        for coin in self.coins.values():
-            coin.rel_pos = randint(0, 57)
-
-
     def run(self, board_drawn=True):
 
         # I'm the 2nd player
@@ -135,10 +123,6 @@ class LudoGame:
                 die_rolls = read_die()
 
                 log.info("Received Roll: %s", die_rolls)
-
-                # handle ducks! [0] is returned on rolling 3 sixes
-                # if "DUCK" in die_rolls:
-                #     raise NotImplementedError
 
                 # Apply strategies to find what next move should be
                 all_moves = []

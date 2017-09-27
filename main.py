@@ -42,9 +42,6 @@ class LudoApp(QGraphicsView):
     def keyPressEvent(self, e):
         if e.key() == QtC.Qt.Key_Escape:
             self.close()
-        elif e.key() == QtC.Qt.Key_Space:
-            self.game.randomize_board()
-            self.board.paint(self.game.coins)
 
 
 class ThreadedGame(LudoGame, QtC.QThread):
