@@ -75,7 +75,7 @@ class LudoGame:
         they are assumed to be valid.
         """
         for move in moves:
-            log.debug("Move %s" % move)
+            log.debug("Making Move: %s" % move)
             coin_name, die = move.split('_')
             self.coins[coin_name] += int(die)
 
@@ -105,6 +105,7 @@ class LudoGame:
 
                 # Read die rolls from client (stdin)
                 die_rolls = read_line()
+                log.info("Received Roll: %s", die_rolls)
 
                 # handle ducks! [0] is returned on rolling 3 sixes
                 # if die_rolls == [0]:
