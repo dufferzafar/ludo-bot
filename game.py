@@ -8,7 +8,7 @@ import logging
 from random import randint
 
 # Our Code
-from player import Player
+from player import Player, Coin
 from color_log import ColoredLogs
 
 # Setup Colored logging to stderr
@@ -40,7 +40,7 @@ class LudoGame:
     def __init__(self):
 
         # Read initial parameters from the client
-        init = map(int, read_line().split(' '))
+        init = list(map(int, read_line().split(' ')))
 
         self.my_player_id = init[0]
         self.time_limit = init[1]
@@ -66,6 +66,32 @@ class LudoGame:
             for player in self.players
             for coin in player.coins
         }
+
+    def dump_state(self):
+        """Serialize the state of the game."""
+        s = ""
+        # TODO: Players is not really required in state ?
+        s += "Players: " + ", ".join([p.color for p in self.players])
+        s += "\n"
+        s += "Coins: " + ", ".join(["%s_%d" % (c, c.rel_pos) for c in self.coins.values()])
+        return s
+
+    def load_state(self, state):
+        """Load the state of the game from a dump."""
+        players, coins, _ = state.strip().split("\n")
+        # Break second part into a list
+        _list = lambda s: s.strip().split(": ")[1].split(", ")
+
+        self.players = [Player(color) for color in _list(players)]
+
+        # A list of coin states
+        coin_objects = {}
+        for cs in _list(coins):
+            coin = Coin(cs[0], int(cs[1]))
+            coin.rel_pos = int(cs.split("_")[1])
+            coin_objects[str(coin)] = coin
+
+        self.coins = coin_objects
 
     def randomize_board(self):
         """
@@ -114,6 +140,8 @@ class LudoGame:
                      if i != self.my_player_id - 1]
         # Now it is my turn!
         while True:
+
+            log.warn(self.dump_state())
 
             # 2nd player is not repeating, so it is my turn!
             if not opponent_repeating:
@@ -176,5 +204,13 @@ class LudoGame:
 
 
 if __name__ == '__main__':
+    # Test Board states
     g = LudoGame()
-    g.run(board_drawn=False)
+    log.warn(g.dump_state())
+
+    st = """
+    Players: RED, YELLOW
+    Coins: Y3_2, R3_4, Y1_8, R1_0, Y2_0, R0_9, R2_18, Y0_0
+    """
+    g.load_state(st)
+    log.warn(g.dump_state())
