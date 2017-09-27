@@ -176,7 +176,9 @@ class Coin(object):
         This is used in functions that need to check where two coins
         (of different colors) are with respect to one another.
         """
-        mycolor_index = PLAYER_COLORS.index(self.color)
+        for idx, color in enumerate(PLAYER_COLORS):
+            if color[0] == self.color[0]:
+                mycolor_index = idx
 
         if rel_pos == 0:     # Inside yard
             abs_pos = 0
