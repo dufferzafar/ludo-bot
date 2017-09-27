@@ -81,7 +81,7 @@ class Player(object):
         # My coins that can kill
         killers = [
             # Coin and the Position it will move to
-            (coin, coin.rel_pos + die)
+            (coin, coin.rel_to_abs(coin.rel_pos + die))
             for coin in self.movable_coins(die)
             if (
                 coin not in self.on_home_col and       # not on home column
