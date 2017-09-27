@@ -135,6 +135,10 @@ class Player(object):
                    not Board.is_safe(coin.rel_pos)):
                     coin.rel_pos = 0
 
+        log.debug("Positions of coins are:\n")
+        for coin in self.coins:
+            log.debug(str(coin) + ": " + str(coin.rel_pos))
+
     def get_move(self, die_rolls, other_players):
         """
         Use positions of other players to make a move.
