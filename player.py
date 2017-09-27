@@ -66,10 +66,11 @@ class Player(object):
 
         return [
             coin for coin in self.coins.values()
-            if (coin not in self.on_home_col and     # not on home column
+            if (
                 coin not in self.finished_coins and  # not finished
                 coin not in self.in_jail and         # not in jail
-                coin.rel_pos <= 57 - die)            # move is allowed
+                coin.rel_pos <= 57 - die             # move is allowed
+            )
         ]
 
     def can_kill(self, die, opponent):
@@ -82,7 +83,10 @@ class Player(object):
             # Coin and the Position it will move to
             (coin, coin.rel_pos + die)
             for coin in self.movable_coins(die)
-            if not Board.is_safe(coin.rel_pos + die)
+            if (
+                coin not in self.on_home_col and       # not on home column
+                not Board.is_safe(coin.rel_pos + die)  # does not land on a safe square
+            )
         ]
 
         possible_kills = []
@@ -142,14 +146,17 @@ class Player(object):
 
         # Open the lowest coin from jail
         if (die in [1, 6]) and self.in_jail:
+            log.info("Opening Move: %s", self.in_jail[0])
             moves.append((self.in_jail[0], die))
 
         # Kill opponent's farthest possible coin
         elif possible_kills:
+            log.info("Killing Move: %s", possible_kills[-1][0])
             moves.append((possible_kills[-1][0], die))
 
         # Move coin that has moved farthest
         else:
+            log.info("Fast Move")
 
             # Remove coins which if moved will cause stacking
             rel_pos_of_my_coins = [
@@ -157,15 +164,20 @@ class Player(object):
                 for coin in self.coins.values()
             ]
 
+            log.info("Movable: %s", self.movable_coins(die))
+
             # TODO: Should this logic be a part of Player.movable_coins()
             movable_coins = [
-                coin for coin in self.movable_coins(die)
+                coin
+                for coin in self.movable_coins(die)
                 # either this coin moves to a safe square
                 # (where stacking is allowed)
                 if Board.is_safe(coin.rel_pos + die) or
                 # or it does not cause stacking
                 (coin.rel_pos + die) not in rel_pos_of_my_coins
             ]
+
+            log.info("Movable: %s", movable_coins)
 
             # Choose the coin that has moved farthest
             if movable_coins:
