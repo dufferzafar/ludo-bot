@@ -11,10 +11,7 @@ Super Intelligent Ludo Player
 * Better Coin Pieces
 * Better yard
 
-* Coin moving transitions
-* Board gets darker for "current" player
-
-* A history of die rolls & moves below the 
+* A history of die rolls
 
 ## resources
 
