@@ -151,7 +151,7 @@ class Player(object):
 
         # Kill opponent's farthest possible coin
         elif possible_kills:
-            log.info("Killing Move: %s", possible_kills[-1][0])
+            log.info("Killing Move: %s -> %s", possible_kills[-1][0], possible_kills[-1][1])
             moves.append((possible_kills[-1][0], die))
 
         # Move coin that has moved farthest
