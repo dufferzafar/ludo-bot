@@ -131,28 +131,51 @@ class Player(object):
                         not Board.is_safe(coin.rel_pos)):
                     coin.rel_pos = 0
 
-    def get_move(self, die_rolls, opponent):
+    def get_multiple_moves(self, die_rolls, opponent):
+        """
+        Extends get_move to a list of die rolls.
+        """
+        all_moves = []
+
+        # Play each roll consecutively
+        for die in die_rolls:
+
+            # Apply strategies to find what next move should be
+            move = self.get_move(die, opponent)
+
+            # If moves are possible
+            if move:
+                # Convert them to a representation that others understand
+                move = "%s_%d" % (move[0], move[1])
+
+                # Perform them on the board
+                # So that next decision is based on updated board state
+                self.make_moves([move], opponent)
+
+                all_moves.append(move)
+
+        return all_moves
+
+    def get_move(self, die, opponent):
         """
         Use positions of other players to make a move.
 
+        This only works for a single die roll and is extended by get_multiple_moves.
+
         Returns a list of tuples: [(coin, die_roll), ...]
         """
-        moves = []
-
-        die = die_rolls[0]
-
         # Find all possible kills I can make using this die
         possible_kills = self.can_kill(die, opponent)
 
         # Open the lowest coin from jail
         if (die in [1, 6]) and self.in_jail:
             log.info("Opening Move: %s", self.in_jail[0])
-            moves.append((self.in_jail[0], die))
+            return (self.in_jail[0], die)
 
         # Kill opponent's farthest possible coin
         elif possible_kills:
             log.info("Killing Move: %s -> %s", possible_kills[-1][0], possible_kills[-1][1])
-            moves.append((possible_kills[-1][0], die))
+            return (possible_kills[-1][0], die)
 
         # Move coin that has moved farthest
         else:
@@ -182,9 +205,7 @@ class Player(object):
             # Choose the coin that has moved farthest
             if movable_coins:
                 movable_coins.sort(key=lambda c: c.rel_pos)
-                moves.append((movable_coins[-1], die))
-
-        return moves
+                return (movable_coins[-1], die)
 
         # Alvi's "expert" ludo player
         # if self.can_open(): open

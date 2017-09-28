@@ -117,23 +117,7 @@ class LudoGame:
                 log.info("Received Roll: %s", die_rolls)
 
                 # TODO: Consider all possible combinations of moves!
-                all_moves = []
-                for die in die_rolls:
-
-                    # Apply strategies to find what next move should be
-                    moves = self.player.get_move([die], self.opponent)
-
-                    # If moves are possible
-                    if moves:
-
-                        # Convert them to a representation that others understand
-                        moves = ["%s_%d" % (c, d) for (c, d) in moves]
-
-                        # Perform them on the board
-                        # So that next decision is based on updated board state
-                        self.player.make_moves(moves, self.opponent)
-
-                        all_moves += moves
+                all_moves = self.player.get_multiple_moves(die_rolls, self.opponent)
 
                 # if no move possible
                 if not all_moves:
