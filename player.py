@@ -73,6 +73,10 @@ class Player(object):
             )
         ]
 
+    def can_finish(self, die):
+        """Coins which can finish on a die roll."""
+        pass
+
     def can_kill(self, die, opponent):
         """Who can i kill with this die roll
            Returns a list of tuple : (killer_coin, target_coin)
@@ -166,6 +170,8 @@ class Player(object):
         """
         # Find all possible kills I can make using this die
         possible_kills = self.can_kill(die, opponent)
+
+        # TODO: Move coin that can finish
 
         # Open the lowest coin from jail
         if (die in [1, 6]) and self.in_jail:
