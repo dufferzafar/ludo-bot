@@ -90,7 +90,7 @@ class BoardView(QGraphicsScene):
         elif relative_to == 3:
             new_y -= BoardConfig.SQUARE_SIZE
 
-        return new_x, new_y
+        return int(new_x), int(new_y)
 
     def coordinatesOfSquare(self, square, relative_to=0):
         """Get coordinates for a square whose position is given relative to some player."""
