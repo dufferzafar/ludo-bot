@@ -42,7 +42,7 @@ class Player(object):
             self.coins[str(coin)] = coin
 
     @property
-    def percent(self):
+    def percent_complete(self):
         """How much game have I completed?"""
         return sum([25 * (c.rel_pos / 57) for c in self.coins.values()])
 
@@ -173,17 +173,19 @@ class Player(object):
 
         # TODO: Move coin that can finish
 
-        # Open the lowest coin from jail
+        # Open
         if (die in [1, 6]) and self.in_jail:
             log.info("Opening Move: %s", self.in_jail[0])
+            # Open the lowest coin from jail
             return (self.in_jail[0], die)
 
-        # Kill opponent's farthest possible coin
+        # Kill
         elif possible_kills:
+            # Kill opponent's farthest possible coin
             log.info("Killing Move: %s -> %s", possible_kills[-1][0], possible_kills[-1][1])
             return (possible_kills[-1][0], die)
 
-        # Move coin that has moved farthest
+        # Modified Fast
         else:
             log.info("Fast Move")
 
@@ -209,6 +211,7 @@ class Player(object):
             log.info("Movable: %s", movable_coins)
 
             # Choose the coin that has moved farthest
+            # TODO: Consider threats while deciding moves
             if movable_coins:
                 movable_coins.sort(key=lambda c: c.rel_pos)
                 return (movable_coins[-1], die)
