@@ -4,6 +4,8 @@
 import sys
 import time
 
+from itertools import permutations
+
 # Our Code
 from player import Player, Coin
 from config import log
@@ -105,18 +107,62 @@ class LudoGame:
 
                 log.info("Received Roll: %s", die_rolls)
 
-                # TODO: Consider all possible combinations of moves!
-                all_moves = self.player.get_multiple_moves(die_rolls, self.opponent)
+                # Save state
+                saved_positions = {
+                    name: coin.rel_pos
+                    for (name, coin) in self.coins.items()
+                }
+
+                # Store: [(possible_moves, benefit)]
+                all_possible_moves = []
+
+                # Consider all possible unique permutations of moves!
+                for possible_rolls in set(permutations(die_rolls)):
+
+                    # Find all moves possible for this permutation of the rolls
+                    possible_moves = self.player.get_multiple_moves(possible_rolls, self.opponent)
+
+                    # TODO: Use heuristics to calculate benefit of each list of possible_moves
+                    benefit = 0
+
+                    # Use percent_complete & profits of each move
+
+                    # self.player.percent_complete
+                    # self.opponent.percent_complete
+
+                    # Add it to list
+                    if possible_moves:
+                        all_possible_moves.append((possible_moves, benefit))
+
+                    # Reset state
+                    for name, coin in self.coins.items():
+                        coin.rel_pos = saved_positions[name]
 
                 # if no move possible
-                if not all_moves:
-                    all_moves = "NA"
+                if not all_possible_moves:
+                    moves = "NA"
                 else:
-                    all_moves = "<next>".join(all_moves)
+                    # Only keep possible moves of maximal length
+                    maximal = max(all_possible_moves, key=lambda t: len(t[0]))
+                    max_len = len(maximal[0])
+                    all_valid_moves = filter(lambda t: len(t[0]) == max_len, all_possible_moves)
 
-                # Send the all_moves to client (stdout)
-                log.info("Sending Moves: %s", all_moves)
-                write_output(all_moves)
+                    # log.critical("Max len: %r", max_len)
+                    # log.critical("Possible: %r", all_possible_moves)
+                    # log.critical("Valid: %r", all_valid_moves)
+
+                    # Sort all_valid_moves based on benefit
+                    moves = sorted(all_valid_moves, key=lambda t: t[1])[-1][0]
+
+                    # Play finally decided moves
+                    self.player.make_moves(moves, self.opponent)
+
+                    # Convert to a format that the external client understands
+                    moves = "<next>".join(moves)
+
+                # Send the moves to client (stdout)
+                log.info("Sending Moves: %s", moves)
+                write_output(moves)
 
             else:
                 opponent_repeating = False
