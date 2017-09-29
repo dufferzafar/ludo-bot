@@ -83,6 +83,10 @@ class LudoGame:
 
         # I'm the 2nd player
         if self.my_id == 2:
+
+            if not no_board:
+                self.update_turn.emit(self.opponent.number)
+
             dice = read_line()
             moves = read_moves()
 
@@ -98,6 +102,9 @@ class LudoGame:
 
             # 2nd player is not repeating, so it is my turn!
             if not opponent_repeating:
+
+                if not no_board:
+                    self.update_turn.emit(self.player.number)
 
                 # Roll the die
                 write_output("<THROW>")
@@ -177,6 +184,10 @@ class LudoGame:
             # If the moves I played didn't result in a REPEAT
             # The opponent will now get another chance
             if dice != "REPEAT":
+
+                if not no_board:
+                    self.update_turn.emit(self.opponent.number)
+
                 moves = read_moves()
 
                 # Opponent made a move that resulted in a REPEAT!

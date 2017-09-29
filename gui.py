@@ -34,6 +34,7 @@ class LudoApp(QGraphicsView):
 
         self.game = ThreadedGame(player_id, game_mode)
         self.game.update_board.connect(self.board.paint)
+        self.game.update_turn.connect(self.board.showTurn)
 
         self.board.paint(self.game.coins)
 
@@ -45,6 +46,7 @@ class LudoApp(QGraphicsView):
 class ThreadedGame(LudoGame, QtC.QThread):
 
     update_board = QtC.pyqtSignal(object)
+    update_turn = QtC.pyqtSignal(object)
 
     def __init__(self, player_id, game_mode):
         LudoGame.__init__(self, player_id, game_mode)

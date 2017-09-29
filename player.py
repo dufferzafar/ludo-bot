@@ -34,6 +34,7 @@ class Player(object):
 
         # Player's Color: Red, Green, Blue, Yellow
         self.color = color
+        self.number = PLAYER_COLORS.index(color)
 
         # Each Player has 4 Coins
         self.coins = {}
