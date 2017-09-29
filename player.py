@@ -20,7 +20,7 @@ class Board(object):
     @staticmethod
     def is_safe(rel_pos):
         """Checks whether a given relative position is safe or not?"""
-        if rel_pos in Board.safe_squares + Board.home_column:
+        if rel_pos in Board.safe_squares + Board.home_column + [0]:
             return True
 
         return False
