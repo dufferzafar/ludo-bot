@@ -77,6 +77,25 @@ class Player(object):
         """Coins which can finish on a die roll."""
         return [coin for name, coin in self.coins.items() if coin.rel_pos + die == 57]
 
+    def threat(self, relpos, opponent):
+        if relpos > 57:
+            relpos = 57
+
+        # if this position is safe then no threat
+        if Board.is_safe(relpos):
+            return 0
+
+        abs_pos = self.coins.itervalues().next().rel_to_abs(relpos)
+
+        threat = 0
+        for coin in opponent.coins.values():
+            if (coin.rel_pos >= 1 and  # not in yard
+                    coin.rel_pos <= 51 and  # not in home column or finished
+                    coin.rel_to_abs(coin.rel_pos + 6) >= abs_pos):  # and can reach abs_pos in one die roll
+                threat += 1
+
+        return threat
+
     def can_kill(self, die, opponent):
         """Who can i kill with this die roll
            Returns a list of tuple : (killer_coin, target_coin)
