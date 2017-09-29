@@ -74,6 +74,27 @@ class Player(object):
             )
         ]
 
+    def non_stacking_moves(self, die):
+        """Returns a list of movable coins that wont cause stacking"""
+        # Remove coins which if moved will cause stacking
+        rel_pos_of_my_coins = [
+            coin.rel_pos
+            for coin in self.coins.values()
+        ]
+
+        log.info("Movable: %s", self.movable_coins(die))
+
+        movable_coins = [
+            coin
+            for coin in self.movable_coins(die)
+            # either this coin moves to a safe square
+            # (where stacking is allowed)
+            if Board.is_safe(coin.rel_pos + die) or
+            # or it does not cause stacking
+            (coin.rel_pos + die) not in rel_pos_of_my_coins
+        ]
+        return movable_coins
+
     def can_finish(self, die):
         """Coins which can finish on a die roll."""
         return [coin for name, coin in self.coins.items() if coin.rel_pos + die == 57]
@@ -185,28 +206,7 @@ class Player(object):
 
                 all_moves.append(move)
 
-        return all_moves
-
-    def non_stacking_moves(self, die):
-        """Returns a list of movable coins that wont cause stacking"""
-        # Remove coins which if moved will cause stacking
-        rel_pos_of_my_coins = [
-            coin.rel_pos
-            for coin in self.coins.values()
-        ]
-
-        log.info("Movable: %s", self.movable_coins(die))
-
-        movable_coins = [
-            coin
-            for coin in self.movable_coins(die)
-            # either this coin moves to a safe square
-            # (where stacking is allowed)
-            if Board.is_safe(coin.rel_pos + die) or
-            # or it does not cause stacking
-            (coin.rel_pos + die) not in rel_pos_of_my_coins
-        ]
-        return movable_coins
+        return all_moves, total_benefit
 
     def get_move(self, die, opponent):
         """
