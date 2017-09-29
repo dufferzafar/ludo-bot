@@ -1,4 +1,6 @@
 echo $1 # foldername code or demo1 or demo2
+#delete previous log files
+rm server_log.txt player0_log.txt player1_log.txt
 
 xterm -hold -title "Server" -l -lf "server_log.txt" -e "$1/server/server 10000" &
 sleep 1
