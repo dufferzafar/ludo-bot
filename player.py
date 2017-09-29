@@ -190,10 +190,11 @@ class Player(object):
         all_moves = []
 
         # Play each roll consecutively
+        total_benefit = 0
         for die in die_rolls:
 
             # Apply strategies to find what next move should be
-            move = self.get_move(die, opponent)
+            move, benefit = self.get_move(die, opponent)
 
             # If moves are possible
             if move:
@@ -205,6 +206,7 @@ class Player(object):
                 self.make_moves([move], opponent)
 
                 all_moves.append(move)
+                total_benefit += benefit
 
         return all_moves, total_benefit
 
@@ -234,25 +236,25 @@ class Player(object):
         if coin_to_finish:
             log.info("Finishing Move: %s", coin_to_finish[0])
             # move any coin that can finish
-            return (coin_to_finish[0], die)
+            return (coin_to_finish[0], die), 20
 
         # Open
         elif (die in [1, 6]) and self.in_jail:
             log.info("Opening Move: %s", self.in_jail[0])
             # Open the lowest coin from jail
-            return (self.in_jail[0], die)
+            return (self.in_jail[0], die), 15
 
         # Kill
         elif possible_kills:
             # Kill opponent's farthest possible coin
             log.info("Killing Move: %s -> %s", possible_kills[-1][0], possible_kills[-1][1])
-            return (possible_kills[-1][0], die)
+            return (possible_kills[-1][0], die), 14
 
         # if in danger save that coin
         elif can_get_killed:
             # save the farthest coin in danger
             log.info("Defensive move, Saving %s", can_get_killed[-1])
-            return (can_get_killed[-1], die)
+            return (can_get_killed[-1], die), 10
 
         # Modified Fast
         else:
@@ -270,9 +272,12 @@ class Player(object):
                     # the threat at future pos of the farthest coin
                     self.threat(movable_coins[-2].rel_pos + die, opponent) <
                         self.threat(movable_coins[-1].rel_pos + die, opponent)):
-                    return (movable_coins[-2], die)  # move second farthest coin
+                    return (movable_coins[-2], die), 8  # move second farthest coin
 
-                return (movable_coins[-1], die)
+                return (movable_coins[-1], die), 8
+
+            # No move possible
+            return None, 0
 
 
 class Coin(object):

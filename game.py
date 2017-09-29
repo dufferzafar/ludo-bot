@@ -127,10 +127,7 @@ class LudoGame:
                 for possible_rolls in set(permutations(die_rolls)):
 
                     # Find all moves possible for this permutation of the rolls
-                    possible_moves = self.player.get_multiple_moves(possible_rolls, self.opponent)
-
-                    # TODO: Use heuristics to calculate benefit of each list of possible_moves
-                    benefit = 0
+                    possible_moves, benefit = self.player.get_multiple_moves(possible_rolls, self.opponent)
 
                     # Use percent_complete & profits of each move
 
