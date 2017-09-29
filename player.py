@@ -286,9 +286,6 @@ class Coin(object):
     def rel_pos(self, square):
 
         # if in finishing square, then stay in finishing square
-        if self._rel_pos is 57:
-            return
-
         self._rel_pos = square
 
         # Update absolute position
