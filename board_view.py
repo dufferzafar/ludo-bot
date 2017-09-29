@@ -71,6 +71,26 @@ class BoardView(QGraphicsScene):
         text.setBrush(QtG.QBrush(QtG.QColor(Color.WHITE)))
         text.setPos(Qt.QPointF(pos[0] + 23, pos[1] + 12))
 
+    def addYardBorder(self, x, y, color):
+        """Create an empty bordered rectangle around a yard."""
+        pen = QtG.QPen(QtG.QColor(color))
+        pen.setWidthF(4)
+
+        offset = 15
+        self.addRect(x + offset, y + offset,
+                     BoardConfig.YARD_SIZE - 2*offset, BoardConfig.YARD_SIZE - 2*offset,
+                     pen=pen)
+
+    def showTurn(self, player):
+        """Indicate whose turn it is?"""
+
+        # Since this is a border has a color same as the yard
+        # It effectively hides all borders
+        for x, y, color in BoardConfig.YARDS:
+            self.addYardBorder(x, y, color)
+
+        self.addYardBorder(BoardConfig.YARDS[player][0], BoardConfig.YARDS[player][1], Color.WHITE)
+
     def rotate(self, point, relative_to=0):
         """Rotate a point around the board's center."""
 
@@ -187,13 +207,7 @@ class BoardView(QGraphicsScene):
         self.addSquare(480, 720, BoardConfig.SQUARE_SIZE, Color.BLUE)
 
         # Add Yards / Jails
-        yards = [
-            (0, 0, Color.RED),
-            (540, 0, Color.GREEN),
-            (0, 540, Color.BLUE),
-            (540, 540, Color.YELLOW)
-        ]
-        for x, y, color in yards:
+        for x, y, color in BoardConfig.YARDS:
             # Yard
             self.addSquare(x, y, BoardConfig.YARD_SIZE, color, border_width=6)
 

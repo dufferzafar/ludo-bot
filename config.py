@@ -59,3 +59,10 @@ class Board():
         (YARD_COIN_OFF, YARD_SUBSQUARE_SIZE + YARD_COIN_OFF),
         (YARD_SUBSQUARE_SIZE + YARD_COIN_OFF, YARD_SUBSQUARE_SIZE + YARD_COIN_OFF),
     ]
+
+    YARDS = [
+        (0, 0, Color.RED),
+        (540, 0, Color.GREEN),
+        (0, 540, Color.BLUE),
+        (540, 540, Color.YELLOW)
+    ]
