@@ -32,23 +32,12 @@ def read_die():
 
 class LudoGame:
 
-    def __init__(self):
+    def __init__(self, player_id, game_mode):
 
-        # Read initial parameters from the client
-        init = list(map(int, read_line().split(' ')))
-
-        self.my_id = init[0]
-        self.time_limit = init[1]
-        self.game_mode = init[2]
-        self.draw_board = bool(init[3])
-
-        log.debug("Time Limit: %d", self.time_limit)
-        log.debug("My Player ID: %d", self.my_id)
-        log.debug("Game Mode: %d", self.game_mode)
-        log.debug("Drawing Board: %d", self.draw_board)
+        self.my_id = player_id
 
         # Our games will only ever have 2 players
-        if self.game_mode == 0:
+        if game_mode == 0:
             colors = ["RED", "YELLOW"]
         else:
             colors = ["BLUE", "GREEN"]

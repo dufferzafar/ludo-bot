@@ -1,7 +1,5 @@
 """
-This module provides the main entry point to the Ludo Application.
-
-This is what should be run from the CLI: python main.py
+This module creates a PyQt application to show the Ludo Board.
 """
 
 # Python stdlib
@@ -21,7 +19,7 @@ from game import LudoGame
 
 class LudoApp(QGraphicsView):
 
-    def __init__(self):
+    def __init__(self, player_id, game_mode):
         QGraphicsView.__init__(self)
 
         # Window's dimensions
@@ -34,7 +32,7 @@ class LudoApp(QGraphicsView):
         self.board = BoardView()
         self.setScene(self.board)
 
-        self.game = ThreadedGame()
+        self.game = ThreadedGame(player_id, game_mode)
         self.game.update_board.connect(self.board.paint)
 
         self.board.paint(self.game.coins)
@@ -48,13 +46,14 @@ class ThreadedGame(LudoGame, QtC.QThread):
 
     update_board = QtC.pyqtSignal(object)
 
-    def __init__(self):
-        LudoGame.__init__(self)
+    def __init__(self, player_id, game_mode):
+        LudoGame.__init__(self, player_id, game_mode)
         QtC.QThread.__init__(self)
 
         self.update_board.emit(self.coins)
 
-if __name__ == '__main__':
+
+def run_gui(player_id, game_mode):
 
     # Close on Ctrl + C from terminal
     # https://stackoverflow.com/a/5160720
@@ -62,7 +61,7 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    ludo = LudoApp()
+    ludo = LudoApp(player_id, game_mode)
 
     ludo.show()
 
