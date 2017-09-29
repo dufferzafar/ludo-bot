@@ -226,6 +226,8 @@ class Player(object):
 
         # Find all my coins that can get killed
         can_get_killed = self.in_danger(opponent)
+        can_get_killed = [coin for coin in can_get_killed
+                          if coin in movable_coins]
 
         # Move coin that can finish
         if coin_to_finish:
