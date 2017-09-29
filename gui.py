@@ -55,7 +55,7 @@ class ThreadedGame(LudoGame, QtC.QThread):
         self.update_board.emit(self.coins)
 
 
-def run_gui(player_id, game_mode):
+def run_gui(player_id, game_mode, start=True):
 
     # Close on Ctrl + C from terminal
     # https://stackoverflow.com/a/5160720
@@ -67,6 +67,10 @@ def run_gui(player_id, game_mode):
 
     ludo.show()
 
-    ludo.game.start()
+    if start:
+        ludo.game.start()
 
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    run_gui(0, 0, start=False)
