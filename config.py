@@ -63,6 +63,6 @@ class Board():
     YARDS = [
         (0, 0, Color.RED),
         (540, 0, Color.GREEN),
-        (0, 540, Color.BLUE),
-        (540, 540, Color.YELLOW)
+        (540, 540, Color.YELLOW),
+        (0, 540, Color.BLUE)
     ]
