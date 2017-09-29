@@ -186,6 +186,27 @@ class Player(object):
 
         return all_moves
 
+    def non_stacking_moves(self, die):
+        """Returns a list of movable coins that wont cause stacking"""
+        # Remove coins which if moved will cause stacking
+        rel_pos_of_my_coins = [
+            coin.rel_pos
+            for coin in self.coins.values()
+        ]
+
+        log.info("Movable: %s", self.movable_coins(die))
+
+        movable_coins = [
+            coin
+            for coin in self.movable_coins(die)
+            # either this coin moves to a safe square
+            # (where stacking is allowed)
+            if Board.is_safe(coin.rel_pos + die) or
+            # or it does not cause stacking
+            (coin.rel_pos + die) not in rel_pos_of_my_coins
+        ]
+        return movable_coins
+
     def get_move(self, die, opponent):
         """
         Use positions of other players to make a move.
@@ -199,6 +220,9 @@ class Player(object):
 
         # Find all possible coins that can finish using this die
         coin_to_finish = self.can_finish(die)
+
+        # Find all non stacking movable_coins
+        movable_coins = self.non_stacking_moves(die)
 
         # Find all my coins that can get killed
         can_get_killed = self.in_danger(opponent)
@@ -230,25 +254,6 @@ class Player(object):
         # Modified Fast
         else:
             log.info("Fast Move")
-
-            # Remove coins which if moved will cause stacking
-            rel_pos_of_my_coins = [
-                coin.rel_pos
-                for coin in self.coins.values()
-            ]
-
-            log.info("Movable: %s", self.movable_coins(die))
-
-            # TODO: Should this logic be a part of Player.movable_coins()
-            movable_coins = [
-                coin
-                for coin in self.movable_coins(die)
-                # either this coin moves to a safe square
-                # (where stacking is allowed)
-                if Board.is_safe(coin.rel_pos + die) or
-                # or it does not cause stacking
-                (coin.rel_pos + die) not in rel_pos_of_my_coins
-            ]
 
             log.info("Movable: %s", movable_coins)
 
