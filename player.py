@@ -77,7 +77,14 @@ class Player(object):
         """Coins which can finish on a die roll."""
         return [coin for name, coin in self.coins.items() if coin.rel_pos + die == 57]
 
+    def in_danger(self, opponent):
+        """Coins which can get_killed in the next die roll"""
+        in_danger = [coin for coin in self.coins.values() if self.threat(coin.rel_pos, opponent) > 0]
+        # sorted in increasing order of relative position
+        return sorted(in_danger, key = lambda coin: coin.rel_pos)
+
     def threat(self, relpos, opponent):
+        """Returns threat at a relpos"""
         if relpos > 57:
             relpos = 57
 
