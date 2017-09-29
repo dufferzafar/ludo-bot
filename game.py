@@ -88,7 +88,7 @@ class LudoGame:
 
         self.coins = coin_objects
 
-    def run(self, board_drawn=True):
+    def run(self, no_board=False):
 
         # I'm the 2nd player
         if self.my_id == 2:
@@ -150,7 +150,7 @@ class LudoGame:
 
                 self.opponent.make_moves(moves, self.player)
 
-            if board_drawn:
+            if not no_board:
                 self.update_board.emit(self.coins)
                 time.sleep(1)
 
