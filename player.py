@@ -75,7 +75,7 @@ class Player(object):
 
     def can_finish(self, die):
         """Coins which can finish on a die roll."""
-        pass
+        return [coin for name, coin in self.coins.items() if coin.rel_pos + die == 57]
 
     def can_kill(self, die, opponent):
         """Who can i kill with this die roll
