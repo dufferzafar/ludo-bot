@@ -170,11 +170,17 @@ class Player(object):
         """
         # Find all possible kills I can make using this die
         possible_kills = self.can_kill(die, opponent)
+        # Find all possible coins that can finish using this die
+        coin_to_finish = self.can_finish(die)
 
-        # TODO: Move coin that can finish
+        # Move coin that can finish
+        if coin_to_finish:
+            log.info("Finishing Move: %s", coin_to_finish[0])
+            # move any coin that can finish
+            return (coin_to_finish[0], die)
 
         # Open
-        if (die in [1, 6]) and self.in_jail:
+        elif (die in [1, 6]) and self.in_jail:
             log.info("Opening Move: %s", self.in_jail[0])
             # Open the lowest coin from jail
             return (self.in_jail[0], die)
