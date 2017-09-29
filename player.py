@@ -253,16 +253,18 @@ class Player(object):
             log.info("Movable: %s", movable_coins)
 
             # Choose the coin that has moved farthest
-            # TODO: Consider threats while deciding moves
             if movable_coins:
                 movable_coins.sort(key=lambda c: c.rel_pos)
-                return (movable_coins[-1], die)
 
-        # Alvi's "expert" ludo player
-        # if self.can_open(): open
-        # elif self.can_kill(): kill
-        # elif self.can_die(): protect
-        # else: move fastest
+                # if at least two coins movable
+                if (len(movable_coins) > 1 and
+                    # threat at future pos of second farthest coin is less than
+                    # the threat at future pos of the farthest coin
+                    self.threat(movable_coins[-2].rel_pos + die, opponent) <
+                        self.threat(movable_coins[-1].rel_pos + die, opponent)):
+                    return (movable_coins[-2], die)  # move second farthest coin
+
+                return (movable_coins[-1], die)
 
 
 class Coin(object):
