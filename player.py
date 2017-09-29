@@ -196,8 +196,12 @@ class Player(object):
         """
         # Find all possible kills I can make using this die
         possible_kills = self.can_kill(die, opponent)
+
         # Find all possible coins that can finish using this die
         coin_to_finish = self.can_finish(die)
+
+        # Find all my coins that can get killed
+        can_get_killed = self.in_danger(opponent)
 
         # Move coin that can finish
         if coin_to_finish:
@@ -216,6 +220,12 @@ class Player(object):
             # Kill opponent's farthest possible coin
             log.info("Killing Move: %s -> %s", possible_kills[-1][0], possible_kills[-1][1])
             return (possible_kills[-1][0], die)
+
+        # if in danger save that coin
+        elif can_get_killed:
+            # save the farthest coin in danger
+            log.info("Defensive move, Saving %s", can_get_killed[-1])
+            return (can_get_killed[-1], die)
 
         # Modified Fast
         else:
@@ -327,9 +337,15 @@ class Coin(object):
 def main():
     p1 = Player("RED")
     p2 = Player("GREEN")
-    p1.coins[0].rel_pos = 1
-    p1.coins[1].rel_pos = 4
-    print(p1.get_move([3], [p2]))
+    p1.coins["R1"].rel_pos = 15
+    p1.coins["R2"].rel_pos = 23
+    p1.coins["R3"].rel_pos = 38
+    # print(p1.get_move([3], [p2]))
+    p2.coins["G1"].rel_pos = 8
+    p2.coins["G2"].rel_pos = 1
+    p2.coins["G3"].rel_pos = 23
+    print(p1.in_danger(p2))
+    # print(p1.threat(0,p2))
 
 
 if __name__ == '__main__':
