@@ -92,7 +92,7 @@ class LudoGame:
 
             if not no_board:
                 self.update_board.emit(self.coins)
-                self.update_status.emit(self.oppnent, moves)
+                self.update_status.emit(self.opponent, moves)
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
