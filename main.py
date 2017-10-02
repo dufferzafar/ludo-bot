@@ -23,7 +23,7 @@ if __name__ == '__main__':
     player_id = init[0]
     time_limit = init[1]
     game_mode = init[2]
-    no_board = bool(init[3])
+    no_board = not bool(init[3])
 
     log.debug("My Player ID: %d", player_id)
     log.debug("Time Limit: %d", time_limit)

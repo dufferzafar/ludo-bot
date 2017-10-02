@@ -114,7 +114,7 @@ class Player(object):
         if Board.is_safe(relpos):
             return 0
 
-        abs_pos = self.coins.itervalues().next().rel_to_abs(relpos)
+        abs_pos = list(self.coins.values())[0].rel_to_abs(relpos)
 
         threat = 0
         for coin in opponent.coins.values():

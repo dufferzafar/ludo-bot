@@ -10,7 +10,8 @@ import functools
 from PyQt5 import Qt
 from PyQt5 import QtGui as QtG
 
-from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5 import QtWidgets as QtW
+
 
 # Our Code
 from config import Color
@@ -18,10 +19,10 @@ from config import PLAYER_COLORS
 from config import Board as BoardConfig
 
 
-class BoardView(QGraphicsScene):
+class BoardView(QtW.QGraphicsScene):
 
     def __init__(self):
-        QGraphicsScene.__init__(self)
+        QtW.QGraphicsScene.__init__(self)
         self.setSceneRect(0, 0, 900, 900)
 
     def addSquare(self, x, y, size, color, border_color=Color.BLACK, border_width=2):
