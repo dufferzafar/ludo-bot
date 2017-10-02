@@ -7,20 +7,19 @@ import sys
 import signal
 
 # PyQt Imports
+from PyQt5 import QtGui as QtG
 from PyQt5 import QtCore as QtC
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QGraphicsView
-
+from PyQt5 import QtWidgets as QtW
 # Our Code
 from board_view import BoardView
 from game import LudoGame
 
 
-class LudoApp(QGraphicsView):
+class LudoView(QtW.QGraphicsView):
 
     def __init__(self, player_id, game_mode):
-        QGraphicsView.__init__(self)
+        QtW.QGraphicsView.__init__(self)
 
         # Window's dimensions
         self.setGeometry(QtC.QRect(500, 100, 904, 904))
@@ -54,6 +53,20 @@ class ThreadedGame(LudoGame, QtC.QThread):
 
         self.update_board.emit(self.coins)
 
+class LudoWindow(QtW.QMainWindow):
+
+    def __init__(self, player_id, game_mode):
+        QtW.QMainWindow.__init__(self)
+
+        self.view = LudoView(player_id, game_mode)
+
+        hbox = QtW.QHBoxLayout()
+        hbox.addWidget(self.view)
+
+        mainWidget = QtW.QWidget()
+        mainWidget.setLayout(hbox)
+
+        self.setCentralWidget(mainWidget)
 
 def run_gui(player_id, game_mode, start=True):
 
@@ -61,14 +74,13 @@ def run_gui(player_id, game_mode, start=True):
     # https://stackoverflow.com/a/5160720
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    app = QApplication(sys.argv)
+    app = QtW.QApplication(sys.argv)
 
-    ludo = LudoApp(player_id, game_mode)
-
+    ludo = LudoWindow(player_id, game_mode)
     ludo.show()
 
     if start:
-        ludo.game.start()
+        ludo.view.game.start()
 
     sys.exit(app.exec_())
 
