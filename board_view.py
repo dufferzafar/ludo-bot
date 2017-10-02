@@ -91,44 +91,44 @@ class BoardView(QtW.QGraphicsScene):
         pen.setWidthF(15)
         RoundJoin = 0x80
         pen.setJoinStyle(RoundJoin)
-        
-        x,y = self.coordinatesOfSquare(49, rel)
-        x1,y1 = self.coordinatesOfSquare(50, rel)
-        x2,y2 = self.coordinatesOfSquare(51, rel)
-        
+
+        x, y = self.coordinatesOfSquare(49, rel)
+        x1, y1 = self.coordinatesOfSquare(50, rel)
+        x2, y2 = self.coordinatesOfSquare(51, rel)
+
         path_Item = QtW.QGraphicsPathItem()
         path = QtG.QPainterPath()
-        
+
         if rel == 0:
-            path.moveTo(x+20, y+30)
-            path.lineTo(x1+20, y1+30)
-            path.lineTo(x2+20, y2+30)
-            path.lineTo(x2+40, y2+30)      
-            points = [(x2+40, y2+15),(x2+40, y2+45),(x2+57,y2+30)]
+            path.moveTo(x + 20, y + 30)
+            path.lineTo(x1 + 20, y1 + 30)
+            path.lineTo(x2 + 20, y2 + 30)
+            path.lineTo(x2 + 40, y2 + 30)
+            points = [(x2 + 40, y2 + 15), (x2 + 40, y2 + 45), (x2 + 57, y2 + 30)]
             self.addPolygon(points, color, color)
-        
+
         elif rel == 1:
-            path.moveTo(x+30, y+30)
-            path.lineTo(x1+30, y1+20)
-            path.lineTo(x2+30, y2+20)
-            path.lineTo(x2+30, y2+40)      
-            points = [(x2+15, y2+40),(x2+45, y2+40),(x2+30,y2+57)]
+            path.moveTo(x + 30, y + 30)
+            path.lineTo(x1 + 30, y1 + 20)
+            path.lineTo(x2 + 30, y2 + 20)
+            path.lineTo(x2 + 30, y2 + 40)
+            points = [(x2 + 15, y2 + 40), (x2 + 45, y2 + 40), (x2 + 30, y2 + 57)]
             self.addPolygon(points, color, color)
 
         elif rel == 2:
-            path.moveTo(x+40, y+30)
-            path.lineTo(x1+40, y1+30)
-            path.lineTo(x2+40, y2+30)
-            path.lineTo(x2+20, y2+30)      
-            points = [(x2+20, y2+15),(x2+20, y2+45),(x2+3,y2+30)]
+            path.moveTo(x + 40, y + 30)
+            path.lineTo(x1 + 40, y1 + 30)
+            path.lineTo(x2 + 40, y2 + 30)
+            path.lineTo(x2 + 20, y2 + 30)
+            points = [(x2 + 20, y2 + 15), (x2 + 20, y2 + 45), (x2 + 3, y2 + 30)]
             self.addPolygon(points, color, color)
-        
+
         elif rel == 3:
-            path.moveTo(x+30, y+40)
-            path.lineTo(x1+30, y1+40)
-            path.lineTo(x2+30, y2+40)
-            path.lineTo(x2+30, y2+20)      
-            points = [(x2+15, y2+20),(x2+45, y2+20),(x2+30,y2+3)]
+            path.moveTo(x + 30, y + 40)
+            path.lineTo(x1 + 30, y1 + 40)
+            path.lineTo(x2 + 30, y2 + 40)
+            path.lineTo(x2 + 30, y2 + 20)
+            points = [(x2 + 15, y2 + 20), (x2 + 45, y2 + 20), (x2 + 30, y2 + 3)]
             self.addPolygon(points, color, color)
 
         path_Item.setPath(path)
@@ -277,7 +277,7 @@ class BoardView(QtW.QGraphicsScene):
             self.addSquare(x + yard_sub, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
 
         self.addArrows()
-        
+
         # Add coins
         for coin in coins.values():
             coords = self.coordinatesOfSquare(coin.rel_pos, relative_to=PLAYER_COLORS.index(coin.color))
@@ -288,5 +288,3 @@ class BoardView(QtW.QGraphicsScene):
 
             color_hex = Color.__dict__[coin.color]
             self.addCoin(coords, color_hex, coin.num)
-
-        

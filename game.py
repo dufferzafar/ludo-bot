@@ -197,6 +197,7 @@ class LudoGame:
                     self.update_board.emit(self.coins)
                     self.update_status.emit(self.opponent, moves)
 
+
 if __name__ == '__main__':
     # Test Board states
     g = LudoGame()
