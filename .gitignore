@@ -99,3 +99,11 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# myfiles
+run/
+help/
+settings.json
+setup.cfg
+launch.json
+*.txt
