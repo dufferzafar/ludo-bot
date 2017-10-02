@@ -114,6 +114,23 @@ class BoardView(QtW.QGraphicsScene):
             path.lineTo(x2+30, y2+40)      
             points = [(x2+15, y2+40),(x2+45, y2+40),(x2+30,y2+57)]
             self.addPolygon(points, color, color)
+
+        elif rel == 2:
+            path.moveTo(x+40, y+30)
+            path.lineTo(x1+40, y1+30)
+            path.lineTo(x2+40, y2+30)
+            path.lineTo(x2+20, y2+30)      
+            points = [(x2+20, y2+15),(x2+20, y2+45),(x2+3,y2+30)]
+            self.addPolygon(points, color, color)
+        
+        elif rel == 3:
+            path.moveTo(x+30, y+40)
+            path.lineTo(x1+30, y1+40)
+            path.lineTo(x2+30, y2+40)
+            path.lineTo(x2+30, y2+20)      
+            points = [(x2+15, y2+20),(x2+45, y2+20),(x2+30,y2+3)]
+            self.addPolygon(points, color, color)
+
         path_Item.setPath(path)
         path_Item.setPen(pen)
         self.addItem(path_Item)
@@ -259,6 +276,8 @@ class BoardView(QtW.QGraphicsScene):
             self.addSquare(x, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
             self.addSquare(x + yard_sub, y + yard_sub, yard_sub, color, border_color=Color.WHITE, border_width=border_width)
 
+        self.addArrows()
+        
         # Add coins
         for coin in coins.values():
             coords = self.coordinatesOfSquare(coin.rel_pos, relative_to=PLAYER_COLORS.index(coin.color))
@@ -270,4 +289,4 @@ class BoardView(QtW.QGraphicsScene):
             color_hex = Color.__dict__[coin.color]
             self.addCoin(coords, color_hex, coin.num)
 
-        self.addArrows()
+        
