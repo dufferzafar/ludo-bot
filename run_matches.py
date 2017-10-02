@@ -65,7 +65,9 @@ while match_count < TOTAL_MATCHES:
     s_log, p1_log, p2_log = log_files(match_count)
 
     s = Popen(cmd_server,  stdout=s_log,  stderr=STDOUT)
+    time.sleep(1)
     p1 = Popen(cmd_client, stdout=p1_log, stderr=STDOUT)
+    time.sleep(1)
     p2 = Popen(cmd_client, stdout=p2_log, stderr=STDOUT)
 
     # Wait for them to finish
@@ -86,4 +88,4 @@ while match_count < TOTAL_MATCHES:
     else:
         print("    Error!")
 
-    time.sleep(15)
+    # time.sleep(15)
