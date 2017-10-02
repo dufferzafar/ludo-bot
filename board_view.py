@@ -79,8 +79,34 @@ class BoardView(QtW.QGraphicsScene):
 
         offset = 15
         self.addRect(x + offset, y + offset,
-                     BoardConfig.YARD_SIZE - 2*offset, BoardConfig.YARD_SIZE - 2*offset,
+                     BoardConfig.YARD_SIZE - 2 * offset, BoardConfig.YARD_SIZE - 2 * offset,
                      pen=pen)
+
+    def addArrows(self):
+        for i, color in enumerate(PLAYER_COLORS):
+            self.addArrowPart(getattr(Color, color), i)
+
+    def addArrowPart(self, color, rel):
+        pen = QtG.QPen(QtG.QColor(color))
+        pen.setWidthF(15)
+        RoundJoin = 0x80
+        pen.setJoinStyle(RoundJoin)
+        
+        x,y = self.coordinatesOfSquare(49, rel)
+        x1,y1 = self.coordinatesOfSquare(50, rel)
+        x2,y2 = self.coordinatesOfSquare(51, rel)
+        
+        path_Item = QtW.QGraphicsPathItem()
+        path = QtG.QPainterPath()
+        path.moveTo(x+20, y+30)
+        path.lineTo(x1+20, y1+30)
+        path.lineTo(x2+20, y2+30)
+        # path.lineTo(x3-20, y3+30)      
+        # points = [(x3-20, y3+15),(x3-20, y3+45),(x3-3,y3+30)]
+        # self.addPolygon(points, color, color)
+        path_Item.setPath(path)
+        path_Item.setPen(pen)
+        self.addItem(path_Item)
 
     def showTurn(self, player):
         """Indicate whose turn it is?"""
@@ -233,3 +259,5 @@ class BoardView(QtW.QGraphicsScene):
 
             color_hex = Color.__dict__[coin.color]
             self.addCoin(coords, color_hex, coin.num)
+
+        self.addArrows()
