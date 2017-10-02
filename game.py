@@ -84,14 +84,14 @@ class LudoGame:
         # I'm the 2nd player
         if self.my_id == 2:
 
-            if not no_board:
-                self.update_turn.emit(self.opponent.number)
-
             dice = read_line()
             moves = read_moves()
 
             # Update coin positions using these moves
             self.opponent.make_moves(moves, self.player)
+
+            if not no_board:
+                self.update_board.emit(self.coins)
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
@@ -102,9 +102,6 @@ class LudoGame:
 
             # 2nd player is not repeating, so it is my turn!
             if not opponent_repeating:
-
-                if not no_board:
-                    self.update_turn.emit(self.player.number)
 
                 # Roll the die
                 write_output("<THROW>")
@@ -165,6 +162,9 @@ class LudoGame:
                     # Play finally decided moves
                     self.player.make_moves(moves, self.opponent)
 
+                    if not no_board:
+                        self.update_board.emit(self.coins)
+
                     # Convert to a format that the external client understands
                     moves = "<next>".join(moves)
 
@@ -182,9 +182,6 @@ class LudoGame:
             # The opponent will now get another chance
             if dice != "REPEAT":
 
-                if not no_board:
-                    self.update_turn.emit(self.opponent.number)
-
                 moves = read_moves()
 
                 # Opponent made a move that resulted in a REPEAT!
@@ -197,9 +194,8 @@ class LudoGame:
 
                 self.opponent.make_moves(moves, self.player)
 
-            if not no_board:
-                self.update_board.emit(self.coins)
-                time.sleep(1)
+                if not no_board:
+                    self.update_board.emit(self.coins)
 
 
 if __name__ == '__main__':
