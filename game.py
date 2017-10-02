@@ -128,12 +128,9 @@ class LudoGame:
 
                     # Use percent_complete & profits of each move
 
-                    # self.player.percent_complete
-                    # self.opponent.percent_complete
-
                     # Add it to list
                     if possible_moves:
-                        all_possible_moves.append((possible_moves, benefit))
+                        all_possible_moves.append((possible_moves, benefit + self.player.percent_complete - self.opponent.percent_complete))
 
                     log.warn("State After these moves")
                     log.warn(self.dump_state())
