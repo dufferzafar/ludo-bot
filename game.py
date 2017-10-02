@@ -92,6 +92,7 @@ class LudoGame:
 
             if not no_board:
                 self.update_board.emit(self.coins)
+                self.update_status.emit(self.oppnent, moves)
 
         # Track whether the 2nd player is repeating
         opponent_repeating = False
@@ -161,6 +162,7 @@ class LudoGame:
 
                     if not no_board:
                         self.update_board.emit(self.coins)
+                        self.update_status.emit(self.player, moves)
 
                     # Convert to a format that the external client understands
                     moves = "<next>".join(moves)
@@ -193,7 +195,7 @@ class LudoGame:
 
                 if not no_board:
                     self.update_board.emit(self.coins)
-
+                    self.update_status.emit(self.opponent, moves)
 
 if __name__ == '__main__':
     # Test Board states
