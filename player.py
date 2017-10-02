@@ -82,7 +82,7 @@ class Player(object):
             for coin in self.coins.values()
         ]
 
-        log.info("Movable: %s", self.movable_coins(die))
+        # log.info("Movable: %s", self.movable_coins(die))
 
         movable_coins = [
             coin
@@ -258,9 +258,8 @@ class Player(object):
 
         # Modified Fast
         else:
-            log.info("Fast Move")
 
-            log.info("Movable: %s", movable_coins)
+            # log.info("Movable: %s", movable_coins)
 
             # Choose the coin that has moved farthest
             if movable_coins:
@@ -272,11 +271,15 @@ class Player(object):
                     # the threat at future pos of the farthest coin
                     self.threat(movable_coins[-2].rel_pos + die, opponent) <
                         self.threat(movable_coins[-1].rel_pos + die, opponent)):
-                    return (movable_coins[-2], die), 8  # move second farthest coin
+                    
+                    log.info("Fast Move : %s" % movable_coins[-2])
+                    return (movable_coins[-2], die), 9  # move second farthest coin
 
+                log.info("Fast Move : %s" % movable_coins[-1])
                 return (movable_coins[-1], die), 8
 
             # No move possible
+            log.info("No Move Possible")
             return None, 0
 
 

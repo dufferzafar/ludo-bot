@@ -133,14 +133,14 @@ class LudoGame:
                     if possible_moves:
                         all_possible_moves.append((possible_moves, benefit + self.player.percent_complete - self.opponent.percent_complete))
 
-                    log.warn("State After these moves")
-                    log.warn(self.dump_state())
+                    # log.warn("State After these moves")
+                    # log.warn(self.dump_state())
                     # Reset state
                     for name, coin in self.coins.items():
                         coin.rel_pos = saved_positions[name]
 
-                    log.warn("State Reset")
-                    log.warn(self.dump_state())
+                    # log.warn("State Reset")
+                    # log.warn(self.dump_state())
                 # if no move possible
                 if not all_possible_moves:
                     moves = "NA"
