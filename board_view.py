@@ -98,12 +98,22 @@ class BoardView(QtW.QGraphicsScene):
         
         path_Item = QtW.QGraphicsPathItem()
         path = QtG.QPainterPath()
-        path.moveTo(x+20, y+30)
-        path.lineTo(x1+20, y1+30)
-        path.lineTo(x2+20, y2+30)
-        # path.lineTo(x3-20, y3+30)      
-        # points = [(x3-20, y3+15),(x3-20, y3+45),(x3-3,y3+30)]
-        # self.addPolygon(points, color, color)
+        
+        if rel == 0:
+            path.moveTo(x+20, y+30)
+            path.lineTo(x1+20, y1+30)
+            path.lineTo(x2+20, y2+30)
+            path.lineTo(x2+40, y2+30)      
+            points = [(x2+40, y2+15),(x2+40, y2+45),(x2+57,y2+30)]
+            self.addPolygon(points, color, color)
+        
+        elif rel == 1:
+            path.moveTo(x+30, y+30)
+            path.lineTo(x1+30, y1+20)
+            path.lineTo(x2+30, y2+20)
+            path.lineTo(x2+30, y2+40)      
+            points = [(x2+15, y2+40),(x2+45, y2+40),(x2+30,y2+57)]
+            self.addPolygon(points, color, color)
         path_Item.setPath(path)
         path_Item.setPen(pen)
         self.addItem(path_Item)
