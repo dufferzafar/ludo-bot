@@ -3,17 +3,20 @@
 
 Super Intelligent Ludo Player
 
-## todo
+**Bot​ ​ Name​​** : ​ ​ Magnus
 
-**GUI**
+**Algorithm​ ​ Used​** : ​ ​ Heuristic​ ​ Rule​ ​ Based​ ​ Decision​ ​ Making.
 
-* Arrows which point direction of play.
-* Better Coin Pieces
-* Better yard
+**Game​ ​ State​** : ​ ​ An​ ​ array​ ​ of​ ​ positions​ ​ of​ ​ all​ ​ coins.
 
-* A history of die rolls
+**Running​ ​ the​ ​ code** :
 
-## resources
+1. We​ ​ have​ ​ used​ ​ PyQt5​ ​ to​ ​ display​ ​ the​ ​ board.​ ​ To​ ​ Install​ ​ PyQt5​ ​ (on​ ​ python2.7),​ ​ run
 
-* [Board with Suit Images](https://farhan169.deviantart.com/art/Ludo-178991381)
-* [Simpler Board](https://markhal.deviantart.com/art/Ludo-Board-159778477)
+<code>sudo​ ​ apt-get​ ​ install​ ​ python-pyqt5</code>
+
+2. main.py​ ​ is​ ​ our​ ​ application’s​ ​ entry​ ​ point.​ ​ So​ ​ to​ ​ run​ ​ our​ ​ code​ ​ pass​ ​ main.py​ ​ to​ ​ the​ ​ client.
+
+---
+
+![](screenshot.png)
