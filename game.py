@@ -93,6 +93,9 @@ class LudoGame:
             # Update coin positions using these moves
             self.opponent.make_moves(moves, self.player)
 
+            if not no_board:
+                self.update_board.emit(self.coins)
+
         # Track whether the 2nd player is repeating
         opponent_repeating = False
 
@@ -172,6 +175,9 @@ class LudoGame:
                 log.info("Sending Moves: %s", moves)
                 write_output(moves)
 
+                if not no_board:
+                    self.update_board.emit(self.coins)
+
             else:
                 opponent_repeating = False
 
@@ -197,9 +203,10 @@ class LudoGame:
 
                 self.opponent.make_moves(moves, self.player)
 
-            if not no_board:
-                self.update_board.emit(self.coins)
-                time.sleep(1)
+                if not no_board:
+                    self.update_board.emit(self.coins)
+                    time.sleep(1)
+
 
 
 if __name__ == '__main__':
