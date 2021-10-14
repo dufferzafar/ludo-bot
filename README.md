@@ -19,4 +19,5 @@ Super Intelligent Ludo Player
 
 ---
 
-![](screenshot.png)
+https://user-images.githubusercontent.com/1449512/137268480-8089fa26-81ae-4c39-889b-1af4699226bb.mp4
+
